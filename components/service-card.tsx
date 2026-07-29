@@ -50,6 +50,8 @@ export default function ServiceCard({ icon, title, description, url }: ServiceCa
               alt={title}
               width={96}
               height={96}
+              quality={60}
+              sizes="96px"
               className="rounded-md"
             />
           </div>

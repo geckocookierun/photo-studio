@@ -75,6 +75,8 @@ export default async function Footer({ lang }: { lang: string }) {
               }
               width={150}
               height={150}
+              quality={75}
+              sizes="150px"
               className=" transition-transform duration-300 rounded-lg"
             />
             <h3 className="text-xl font-bold my-4">{dict.footer.about.title}</h3>

@@ -74,9 +74,11 @@ export default async function AnhHoSoChuyenNghiep({ params }: { params: { lang: 
           <CloudinaryImage
             src={heroUrl}
             alt={dict.professional_profile.hero.title}
-            width={1920}
-            height={600}
+            width={1280}
+            height={420}
+            quality={65}
             priority
+            sizes="100vw"
             className="object-cover absolute inset-0 w-full h-full"
           />
         ) : null}
@@ -139,10 +141,11 @@ export default async function AnhHoSoChuyenNghiep({ params }: { params: { lang: 
                 <CloudinaryImage
                   src={image.url}
                   alt={`${image.title} mẫu ${index + 1}`}
-                  width={image.width}
-                  height={image.height}
+                  width={480}
+                  height={640}
+                  quality={65}
+                  sizes="(max-width: 768px) 100vw, 33vw"
                   className=" transition-transform duration-300 rounded-lg"
-                  priority={index === 0}
                 />
               </div>
             ))}

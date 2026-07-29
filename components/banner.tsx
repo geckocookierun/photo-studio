@@ -9,6 +9,8 @@ export default async function Banner({ lang }: { lang: string }) {
   const dict = await getDictionary(lang as ValidLocale);
   const backgroundCardImages = await getImagesFromFolder(cloudinaryFolders.backgroundCardImages);
   const bannerHomepage = await getImagesFromFolder(cloudinaryFolders.bannerHomepage);
+  // Mobile LCP is the first grid photo; keep the grid short to cut bytes
+  const heroCards = backgroundCardImages.slice(0, 6);
 
   return (
     <section
@@ -19,12 +21,12 @@ export default async function Banner({ lang }: { lang: string }) {
         <CloudinaryImage
           src={bannerHomepage[0]?.url}
           alt={bannerHomepage[0]?.title || dict.home.banner.background_alt}
-          width={1920}
-          height={600}
-          priority
-          quality={90}
-          className="object-cover"
-          fetchPriority="high"
+          width={1600}
+          height={500}
+          quality={65}
+          // Avoid downloading the desktop hero on phones
+          sizes="(max-width: 768px) 1px, 100vw"
+          className="object-cover w-full h-auto"
         />
       </div>
 
@@ -59,7 +61,7 @@ export default async function Banner({ lang }: { lang: string }) {
               )}
               role="grid"
             >
-              {backgroundCardImages.map((photo: CloudinaryImageType, index: number) => (
+              {heroCards.map((photo: CloudinaryImageType, index: number) => (
                 <div
                   key={photo.id}
                   className={cn(
@@ -73,10 +75,13 @@ export default async function Banner({ lang }: { lang: string }) {
                   <CloudinaryImage
                     src={photo.url}
                     alt={photo.title || dict.home.banner.photo_alt.replace("{index}", String(index + 1))}
-                    width={300}
-                    height={400}
-                    priority={index < 2}
-                    className="object-cover"
+                    width={360}
+                    height={480}
+                    quality={65}
+                    priority={index === 0}
+                    fetchPriority={index === 0 ? "high" : "low"}
+                    sizes="(max-width: 768px) 45vw, 180px"
+                    className="object-cover w-full h-full"
                   />
                 </div>
               ))}

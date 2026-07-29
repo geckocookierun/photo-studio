@@ -41,9 +41,11 @@ export default async function PhotoLayout({
           <CloudinaryImage
             src={heroUrl}
             alt={sizeMeta.title}
-            width={1920}
-            height={600}
+            width={1280}
+            height={420}
+            quality={65}
             priority
+            sizes="100vw"
             className="object-cover absolute inset-0 w-full h-full"
           />
         ) : null}

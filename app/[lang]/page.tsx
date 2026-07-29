@@ -99,8 +99,10 @@ export default async function Home({ params }: { params: { lang: string } }) {
                             (image: CloudinaryImageType) => image.title === service.imageUrl
                           )?.title
                         }
-                        width={600}
-                        height={500}
+                        width={480}
+                        height={384}
+                        quality={65}
+                        sizes="(max-width: 768px) 100vw, 25vw"
                         className=" transition-transform duration-300 rounded-lg"
                       />
                     </Link>
@@ -354,8 +356,10 @@ export default async function Home({ params }: { params: { lang: string } }) {
                       (image: CloudinaryImageType) => image.title === "nhat_avatar"
                     )?.title
                   }
-                  width={600}
-                  height={500}
+                  width={480}
+                  height={400}
+                  quality={65}
+                  sizes="(max-width: 768px) 100vw, 480px"
                   className=" transition-transform duration-300 rounded-lg"
                 />
               </div>

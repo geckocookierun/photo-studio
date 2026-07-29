@@ -99,10 +99,12 @@ export default async function PhotoService({
                 <CloudinaryImage
                   src={image.url}
                   alt={`${image.title} mẫu ${index + 1}`}
-                  width={dimensions.width}
-                  height={dimensions.height}
-                  className=" transition-transform duration-300 rounded-t-lg"
+                  width={Math.min(dimensions.width * 2, 480)}
+                  height={Math.min(dimensions.height * 2, 640)}
+                  quality={65}
                   priority={index === 0}
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                  className=" transition-transform duration-300 rounded-t-lg"
                 />
               </div>
             </CardContent>

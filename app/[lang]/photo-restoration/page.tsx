@@ -69,9 +69,11 @@ export default async function PhotoRestoration({ params }: { params: { lang: Val
           <CloudinaryImage
             src={heroUrl}
             alt={dict.photo_restoration.title}
-            width={1920}
-            height={600}
+            width={1280}
+            height={420}
+            quality={65}
             priority
+            sizes="100vw"
             className="object-cover absolute inset-0 w-full h-full"
           />
         ) : null}
@@ -103,10 +105,11 @@ export default async function PhotoRestoration({ params }: { params: { lang: Val
                     <CloudinaryImage
                       src={image.url}
                       alt={`${image.title} mẫu ${index + 1}`}
-                      width={image.width}
-                      height={image.height}
+                      width={640}
+                      height={480}
+                      quality={65}
+                      sizes="(max-width: 768px) 100vw, 50vw"
                       className=" transition-transform duration-300 rounded-lg"
-                      priority={index === 0}
                     />
                   </CardContent>
                 </Card>

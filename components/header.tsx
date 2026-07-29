@@ -49,6 +49,8 @@ export default async function Header({ lang }: { lang: string }) {
                 }
                 width={150}
                 height={50}
+                quality={75}
+                sizes="150px"
                 className=" transition-transform duration-300 rounded-lg"
               />
             </Link>
@@ -91,7 +93,7 @@ export default async function Header({ lang }: { lang: string }) {
           rel="noopener noreferrer"
           className="flex items-center justify-center"
         >
-          <Image src="/zalo-logo.png" alt="Zalo Logo" width={48} height={48} priority />
+          <Image src="/zalo-logo.png" alt="Zalo Logo" width={48} height={48} loading="lazy" />
         </Link>
         <Link
           href="https://www.facebook.com/messages/t/116514626424223"
@@ -104,7 +106,7 @@ export default async function Header({ lang }: { lang: string }) {
             alt="Messenger Logo"
             width={36}
             height={36}
-            priority
+            loading="lazy"
           />
         </Link>
       </div>

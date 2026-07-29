@@ -44,6 +44,8 @@ export async function MobileNav({ lang, dict, navItems }: MobileNavProps) {
               }
               width={150}
               height={50}
+              quality={75}
+              sizes="150px"
               className=" transition-transform duration-300 rounded-lg"
             />
           </SheetTitle>
