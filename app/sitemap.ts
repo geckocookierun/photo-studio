@@ -1,8 +1,7 @@
 import { MetadataRoute } from "next";
 import { headers } from "next/headers";
 import { blogSlugs } from "@/lib/blog/posts";
-
-const photoTypes = ["3x4", "3.3x4.8", "3.5x5", "3.5x4.5", "3.6x4.7", "4x6", "5x5", "5x7"];
+import { PHOTO_TYPES } from "@/lib/photo-types";
 
 const servicePathsVi = [
   "anh-the-ho-chieu",
@@ -42,7 +41,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     return [
       entry(`${origin}/`, 1.0, "daily"),
       ...servicePathsVi.map((slug) => entry(`${origin}/${slug}`, 0.8)),
-      ...photoTypes.map((type) => entry(`${origin}/anh-the-ho-chieu/${type}`, 0.7)),
+      ...PHOTO_TYPES.map((type) => entry(`${origin}/anh-the-ho-chieu/${type}`, 0.7)),
       entry(`${origin}/blog`, 0.7),
       ...blogSlugs.map((slug) => entry(`${origin}/blog/${slug}`, 0.6)),
     ];
@@ -52,7 +51,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     return [
       entry(`${origin}/`, 1.0, "daily"),
       ...servicePathsEn.map((slug) => entry(`${origin}/${slug}`, 0.8)),
-      ...photoTypes.map((type) => entry(`${origin}/id-passport-photos/${type}`, 0.7)),
+      ...PHOTO_TYPES.map((type) => entry(`${origin}/id-passport-photos/${type}`, 0.7)),
       entry(`${origin}/blog`, 0.7),
       ...blogSlugs.map((slug) => entry(`${origin}/blog/${slug}`, 0.6)),
     ];

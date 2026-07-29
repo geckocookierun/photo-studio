@@ -1,3 +1,4 @@
+import { PHOTO_TYPES } from "@/lib/photo-types";
 import { getDictionary } from "@/app/[lang]/dictionaries";
 import { CloudinaryImage } from "@/components/CloudinaryImage";
 import { Card, CardContent } from "@/components/ui/card";
@@ -11,11 +12,7 @@ import {
 import { Metadata } from "next";
 
 export async function generateStaticParams() {
-  const photoTypes = ["3x4", "3.3x4.8", "3.5x5", "3.5x4.5", "3.6x4.7", "4x6", "5x5", "5x7"];
-
-  return photoTypes.map((type) => ({
-    type: type,
-  }));
+  return PHOTO_TYPES.map((type) => ({ type }));
 }
 
 export async function generateMetadata({
