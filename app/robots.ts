@@ -4,10 +4,8 @@ import { headers } from "next/headers";
 export default async function robots(): Promise<MetadataRoute.Robots> {
   const headersList = await headers();
   const host = headersList.get("host") || "localhost:3000";
-  const protocol = headersList.get("x-forwarded-proto") || "http";
-  const domain = `${protocol}://${host}`;
 
-  if (domain.includes("chupanhthedanang")) {
+  if (host.includes("chupanhthedanang")) {
     return {
       rules: [{ userAgent: "*", allow: "/" }],
       sitemap: "https://chupanhthedanang.vn/sitemap.xml",
@@ -15,7 +13,7 @@ export default async function robots(): Promise<MetadataRoute.Robots> {
     };
   }
 
-  if (domain.includes("photoboothdanang")) {
+  if (host.includes("photoboothdanang")) {
     return {
       rules: [{ userAgent: "*", allow: "/" }],
       sitemap: "https://photoboothdanang.vn/sitemap.xml",
@@ -23,6 +21,7 @@ export default async function robots(): Promise<MetadataRoute.Robots> {
     };
   }
 
+  // Local / preview — block indexing
   return {
     rules: [{ userAgent: "*", disallow: "/" }],
   };

@@ -1,9 +1,9 @@
 import type React from "react";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import { getDictionary, getAlternateUrls } from "./dictionaries";
+import { getDictionary } from "./dictionaries";
 import { ValidLocale, defaultLocale, isValidLocale } from "@/lib/i18n/config";
-import { headers } from "next/headers";
+import { buildPageAlternates } from "@/lib/i18n/seo";
 import "./globals.css";
 import { LanguageProvider } from "@/contexts/language-provider";
 
@@ -17,13 +17,6 @@ export async function generateMetadata({
   const { lang } = await params;
   const isValidLang = isValidLocale(lang) ? lang : defaultLocale;
   const dict = await getDictionary(isValidLang as ValidLocale);
-  
-  // Lấy pathname hiện tại từ headers (được set bởi middleware)
-  const headersList = await headers();
-  const pathname = headersList.get("x-pathname") || `/${isValidLang}`;
-  
-  // Generate alternate URLs cho các ngôn ngữ
-  const alternates = getAlternateUrls(isValidLang as ValidLocale, pathname);
 
   return {
     title: {
@@ -33,17 +26,13 @@ export async function generateMetadata({
     description: dict.metadata.description,
     generator: "Nhật Studio",
     icons: {
-      icon: "/favicon.svg", // SVG
-      shortcut: "/favicon.svg", // fallback cho Safari/IE cũ
-      apple: "/favicon.svg", // cho iOS
+      icon: "/favicon.svg",
+      shortcut: "/favicon.svg",
+      apple: "/favicon.svg",
     },
-    alternates: {
-      languages: alternates,
-    },
+    alternates: buildPageAlternates(isValidLang as ValidLocale, `/${isValidLang}`),
   };
 }
-
-export const dynamic = "force-static";
 
 export default async function RootLayout({
   children,

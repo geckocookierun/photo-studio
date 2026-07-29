@@ -7,8 +7,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { locales } from "@/lib/i18n/config";
-import { getAlternateUrl } from "@/lib/utils";
+import { locales, type ValidLocale } from "@/lib/i18n/config";
+import { getDomainByLocale, localizePathname } from "@/lib/i18n/seo";
 import { Globe } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 
@@ -21,12 +21,23 @@ export default function LanguageSwitcher() {
   const router = useRouter();
   const pathname = usePathname();
 
-  const switchLanguage = (newLocale: string) => {
-    const segments = getAlternateUrl(newLocale, pathname);
-    const url =
-      newLocale === "vi" ? process.env.NEXT_PUBLIC_VI_DOMAIN : process.env.NEXT_PUBLIC_EN_DOMAIN;
-    console.log(url + segments);
-    router.push(url + segments);
+  const switchLanguage = (newLocale: ValidLocale) => {
+    const path = localizePathname(pathname, newLocale);
+    const origin = getDomainByLocale(newLocale);
+    // Cross-domain when env domains are absolute; otherwise stay on-site for local
+    if (origin.startsWith("http") && typeof window !== "undefined") {
+      const currentHost = window.location.host;
+      try {
+        const targetHost = new URL(origin).host;
+        if (targetHost !== currentHost) {
+          window.location.assign(`${origin}${path}`);
+          return;
+        }
+      } catch {
+        // fall through to same-origin navigation
+      }
+    }
+    router.push(path);
   };
 
   const currentLocale = pathname.split("/")[1];

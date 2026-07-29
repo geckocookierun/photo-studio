@@ -1,13 +1,13 @@
-import { getCanonicalDomain, getDictionary, getDomainByLocale } from "@/app/[lang]/dictionaries";
+import { getDictionary } from "@/app/[lang]/dictionaries";
 import { CloudinaryImage } from "@/components/CloudinaryImage";
 import Footer from "@/components/footer";
 import Header from "@/components/header";
 import { Card, CardContent } from "@/components/ui/card";
 import { ValidLocale } from "@/lib/i18n/config";
+import { absoluteUrl, buildPageAlternates } from "@/lib/i18n/seo";
 import {
   cloudinaryFolders,
   CloudinaryImageType,
-  getAlternateUrl,
   getImagesFromFolder,
 } from "@/lib/utils";
 import { Camera, CameraIcon } from "lucide-react";
@@ -21,8 +21,8 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { lang } = await params;
   const dict = await getDictionary(lang);
-  const pathname = `${getDomainByLocale(lang)}/${lang}/chup-anh-tot-nghiep`;
-  const canonicalUrl = getAlternateUrl(lang, pathname);
+  const path = `/${lang}/chup-anh-tot-nghiep`;
+  const pageUrl = absoluteUrl(lang, path);
   const serviceCoverPhoto = await getImagesFromFolder(cloudinaryFolders.serviceCoverPhoto);
 
   return {
@@ -31,32 +31,20 @@ export async function generateMetadata({
     openGraph: {
       title: dict.graduation_photos.intro.title,
       description: dict.graduation_photos.intro.description,
-      url: canonicalUrl,
+      url: pageUrl,
       siteName: "Nhật Studio",
       locale: lang === "vi" ? "vi_VN" : "en_US",
       type: "website",
       images: [
         {
-          url: serviceCoverPhoto.find((f: CloudinaryImageType) => f.title === "graduation").url, // ảnh bạn muốn hiển thị
+          url: serviceCoverPhoto.find((f: CloudinaryImageType) => f.title === "graduation").url,
           width: 1200,
           height: 630,
           alt: dict.graduation_photos.intro.title,
         },
       ],
     },
-    alternates: {
-      canonical: canonicalUrl,
-      languages: {
-        "en-US": getAlternateUrl("en", pathname).replace(
-          getDomainByLocale(lang) ?? "",
-          getDomainByLocale("en") ?? ""
-        ),
-        "vi-VN": getAlternateUrl("vi", pathname).replace(
-          getDomainByLocale(lang) ?? "",
-          getDomainByLocale("vi") ?? ""
-        ),
-      },
-    },
+    alternates: buildPageAlternates(lang, path),
     twitter: {
       card: "summary_large_image",
       title: dict.graduation_photos.intro.title,

@@ -1,5 +1,7 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
+import type { ValidLocale } from "@/lib/i18n/config";
+import { localizePathname } from "@/lib/i18n/seo";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -24,48 +26,7 @@ export const cloudinaryFolders = {
   },
 } as const;
 
-export const photoServiceUrl = [
-  {
-    url: ["anh-ho-so-chuyen-nghiep", "professional-profile-photos"],
-    viUrl: "anh-ho-so-chuyen-nghiep",
-    enUrl: "professional-profile-photos",
-  },
-  {
-    url: ["anh-the-ho-chieu", "id-passport-photos"],
-    viUrl: "anh-the-ho-chieu",
-    enUrl: "id-passport-photos",
-  },
-  {
-    url: ["phuc-hoi-anh-cu", "photo-restoration"],
-    viUrl: "phuc-hoi-anh-cu",
-    enUrl: "photo-restoration",
-  },
-  {
-    url: ["chup-anh-tot-nghiep", "graduation-photos"],
-    viUrl: "chup-anh-tot-nghiep",
-    enUrl: "graduation-photos",
-  },
-  {
-    url: ["dich-vu", "services"],
-    viUrl: "dich-vu",
-    enUrl: "services",
-  },
-  {
-    url: ["ve-chung-toi", "about-us"],
-    viUrl: "ve-chung-toi",
-    enUrl: "about-us",
-  },
-  {
-    url: ["danh-gia", "testimonials"],
-    viUrl: "danh-gia",
-    enUrl: "testimonials",
-  },
-  {
-    url: ["lien-he", "contact"],
-    viUrl: "lien-he",
-    enUrl: "contact",
-  },
-];
+export { localizedSlugs as photoServiceUrl } from "@/lib/i18n/paths";
 
 export type CloudinaryImageType = {
   id: string;
@@ -115,13 +76,5 @@ export async function getImagesFromFolder(folderName: string) {
 }
 
 export function getAlternateUrl(lang: string, pathname: string) {
-  const alternate = photoServiceUrl.find((item) => item.url.find((f) => pathname.includes(f)));
-  if (!alternate)
-    return lang === "vi" ? pathname.replace("/en", "/vi") : pathname.replace("/vi", "/en");
-  const alternateUrl = alternate.url.find((f) => pathname.includes(f));
-  if (!alternateUrl)
-    return lang === "vi" ? pathname.replace("/en", "/vi") : pathname.replace("/vi", "/en");
-  return lang === "vi"
-    ? pathname.replace("/en", "/vi").replace(alternateUrl, alternate.viUrl)
-    : pathname.replace("/vi", "/en").replace(alternateUrl, alternate.enUrl);
+  return localizePathname(pathname, (lang === "vi" ? "vi" : "en") as ValidLocale);
 }

@@ -10,7 +10,8 @@ import { cloudinaryFolders, CloudinaryImageType, getImagesFromFolder } from "@/l
 import { FacebookIcon, Mail, MapPin, MessageCircle, Phone } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
-import { getDictionary, getDomainByLocale } from "./dictionaries";
+import { absoluteUrl, buildPageAlternates } from "@/lib/i18n/seo";
+import { getDictionary } from "./dictionaries";
 
 export async function generateMetadata({
   params,
@@ -20,7 +21,7 @@ export async function generateMetadata({
   const { lang } = await params;
   const isValidLang = isValidLocale(lang) ? lang : defaultLocale;
   const dict = await getDictionary(isValidLang as ValidLocale);
-  const domain = getDomainByLocale(lang);
+  const pageUrl = absoluteUrl(isValidLang as ValidLocale, `/${isValidLang}`);
   const bannerHomepage = await getImagesFromFolder(cloudinaryFolders.bannerHomepage);
   return {
     title: dict.metadata.title,
@@ -28,26 +29,20 @@ export async function generateMetadata({
     openGraph: {
       title: dict.metadata.title,
       description: dict.metadata.description,
-      url: domain,
+      url: pageUrl,
       siteName: "Nhật Studio",
       locale: lang === "vi" ? "vi_VN" : "en_US",
       type: "website",
       images: [
         {
-          url: bannerHomepage[0].url, // ảnh bạn muốn hiển thị
+          url: bannerHomepage[0].url,
           width: 1920,
           height: 600,
           alt: dict.metadata.title,
         },
       ],
     },
-    alternates: {
-      canonical: domain,
-      languages: {
-        "en-US": getDomainByLocale("en"),
-        "vi-VN": getDomainByLocale("vi"),
-      },
-    },
+    alternates: buildPageAlternates(isValidLang as ValidLocale, `/${isValidLang}`),
     twitter: {
       card: "summary_large_image",
       title: dict.metadata.title,
