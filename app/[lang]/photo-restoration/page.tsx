@@ -11,7 +11,6 @@ import {
   getImagesFromFolder,
 } from "@/lib/utils";
 import { Metadata } from "next";
-import Image from "next/image";
 
 export async function generateMetadata({
   params,
@@ -57,23 +56,27 @@ export default async function PhotoRestoration({ params }: { params: { lang: Val
   const { lang } = await params;
   const dict = await getDictionary(lang);
   const photoRestoration = await getImagesFromFolder(cloudinaryFolders.photoRestoration);
+  const serviceCoverPhoto = await getImagesFromFolder(cloudinaryFolders.serviceCoverPhoto);
+  const heroUrl = serviceCoverPhoto.find((f: CloudinaryImageType) => f.title === "recovery")?.url;
 
   return (
     <main className="min-h-screen">
       <Header lang={lang} />
 
-      <section className="relative h-[300px] md:h-[400px]">
+      <section className="relative h-[300px] md:h-[400px] bg-slate-800">
         <div className="absolute inset-0 bg-gradient-to-r from-slate-900/90 to-slate-900/60 z-10" />
-        <Image
-          src="https://picsum.photos/id/1059/1920/600"
-          alt={dict.photo_restoration.title}
-          fill
-          priority
-          className="object-cover"
-          sizes="100vw"
-        />
+        {heroUrl ? (
+          <CloudinaryImage
+            src={heroUrl}
+            alt={dict.photo_restoration.title}
+            width={1920}
+            height={600}
+            priority
+            className="object-cover absolute inset-0 w-full h-full"
+          />
+        ) : null}
         <div className="relative z-20 container mx-auto px-4 h-full flex flex-col justify-center">
-          <h1 className="text-3xl md:text-5xl font-bold text-white mb-4">
+          <h1 className="font-display text-3xl md:text-5xl font-semibold text-white mb-4">
             {dict.photo_restoration.title}
           </h1>
           <p className="text-xl md:text-2xl text-white/90 mb-8 max-w-2xl">

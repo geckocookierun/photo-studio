@@ -4,6 +4,8 @@ import { Be_Vietnam_Pro, Playfair_Display } from "next/font/google";
 import { getDictionary } from "./dictionaries";
 import { ValidLocale, defaultLocale, isValidLocale } from "@/lib/i18n/config";
 import { buildPageAlternates } from "@/lib/i18n/seo";
+import { buildLocalBusinessJsonLd } from "@/lib/seo/structured-data";
+import JsonLd from "@/components/json-ld";
 import "./globals.css";
 import { LanguageProvider } from "@/contexts/language-provider";
 
@@ -59,6 +61,7 @@ export default async function RootLayout({
   return (
     <html lang={isValidLang} suppressHydrationWarning className={`${sans.variable} ${display.variable}`}>
       <body className={`${sans.className} antialiased`}>
+        <JsonLd data={buildLocalBusinessJsonLd(isValidLang as ValidLocale)} />
         <LanguageProvider lang={isValidLang as ValidLocale}>{children}</LanguageProvider>
       </body>
     </html>

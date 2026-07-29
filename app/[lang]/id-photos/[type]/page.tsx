@@ -4,6 +4,7 @@ import { CloudinaryImage } from "@/components/CloudinaryImage";
 import { Card, CardContent } from "@/components/ui/card";
 import { defaultLocale, isValidLocale, ValidLocale } from "@/lib/i18n/config";
 import { absoluteUrl, buildPageAlternates } from "@/lib/i18n/seo";
+import { getPhotoSizeMeta } from "@/lib/seo/id-photo-copy";
 import {
   cloudinaryFolders,
   CloudinaryImageType,
@@ -23,7 +24,7 @@ export async function generateMetadata({
   const { lang, type } = await params;
 
   const isValidLang = isValidLocale(lang) ? lang : defaultLocale;
-  const dict = await getDictionary(isValidLang as ValidLocale);
+  const meta = getPhotoSizeMeta(isValidLang, type);
   const path = lang === "vi" ? `/anh-the-ho-chieu/${type}` : `/id-passport-photos/${type}`;
   const pageUrl = absoluteUrl(isValidLang as ValidLocale, path);
   const serviceCoverPhoto = await getImagesFromFolder(cloudinaryFolders.serviceCoverPhoto);
@@ -32,11 +33,11 @@ export async function generateMetadata({
     serviceCoverPhoto.find((f: CloudinaryImageType) => f.title === "card")?.url ?? undefined;
 
   return {
-    title: dict.id_photos.title,
-    description: dict.id_photos.description,
+    title: meta.title,
+    description: meta.description,
     openGraph: {
-      title: dict.id_photos.title,
-      description: dict.id_photos.description,
+      title: meta.title,
+      description: meta.description,
       url: pageUrl,
       siteName: "Nhật Studio",
       locale: lang === "vi" ? "vi_VN" : "en_US",
@@ -47,7 +48,7 @@ export async function generateMetadata({
               url: cover,
               width: 1200,
               height: 630,
-              alt: dict.id_photos.title,
+              alt: meta.title,
             },
           ]
         : undefined,
@@ -55,8 +56,8 @@ export async function generateMetadata({
     alternates: buildPageAlternates(isValidLang as ValidLocale, path),
     twitter: {
       card: "summary_large_image",
-      title: dict.id_photos.title,
-      description: dict.id_photos.description,
+      title: meta.title,
+      description: meta.description,
       images: cover ? [cover] : undefined,
     },
   };

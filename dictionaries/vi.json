@@ -1,14 +1,14 @@
 {
   "metadata": {
-    "title": "Nhật Studio - Dịch Vụ Chụp Ảnh Chuyên Nghiệp",
-    "description": "Dịch vụ chụp ảnh chuyên nghiệp cho ảnh thẻ, chân dung và các dịp đặc biệt với chỉnh sửa chuyên nghiệp"
+    "title": "Chụp ảnh thẻ Đà Nẵng | Visa - Hộ chiếu lấy ngay - Nhật Studio",
+    "description": "Chụp ảnh thẻ, visa, hộ chiếu tại Đà Nẵng — chỉnh sửa chuyên nghiệp, lấy ngay trong ngày. Nhật Studio, 254/9 Hoàng Diệu. Hotline 0909939351."
   },
   "home": {
     "banner": {
       "aria_label": "Giới thiệu Studio",
-      "background_alt": "Nhật Studio - Dịch vụ chụp ảnh chuyên nghiệp",
-      "title": "Nhật Studio",
-      "description": "\"Chúng tôi chuyên cung cấp dịch vụ chụp ảnh chuyên nghiệp với nhiều năm kinh nghiệm. Từ ảnh thẻ, chân dung, profile đến ảnh gia đình, chúng tôi cam kết mang đến cho bạn những khoảnh khắc đẹp nhất.\"",
+      "background_alt": "Chụp ảnh thẻ Đà Nẵng tại Nhật Studio",
+      "title": "Chụp ảnh thẻ Đà Nẵng",
+      "description": "\"Ảnh thẻ, visa, hồ sơ và chân dung — lấy ngay trong ngày tại Nhật Studio. Đúng chuẩn giấy tờ, chỉnh sửa tự nhiên.\"",
       "cta_aria_label": "Đặt lịch chụp ảnh - Gọi 0909939351",
       "photo_alt": "Mẫu ảnh chụp {index} tại Nhật Studio"
     },
@@ -237,11 +237,11 @@
     }
   },
   "id_photos": {
-    "title": "Ảnh thẻ, hộ chiếu & visa - Nhật Studio",
-    "description": "Chụp ảnh thẻ đạt chuẩn cho mọi loại giấy tờ, hồ sơ với chất lượng cao tại Đà Nẵng",
+    "title": "Chụp ảnh thẻ, hộ chiếu & visa Đà Nẵng | Nhật Studio",
+    "description": "Chụp ảnh thẻ đạt chuẩn mọi giấy tờ tại Đà Nẵng — 3x4, 4x6, visa. Lấy ngay tại Nhật Studio Hoàng Diệu.",
     "heading": "Chụp ảnh thẻ Đà Nẵng",
-    "subtitle": "Nhận luôn sản phẩm và chụp ảnh thẻ cho các bạn, các khách hàng thân quen tại Đà Nẵng. Mỗi bức ảnh Nhật chụp và chỉnh sửa đều mang một cảm xúc vào trong đó.",
-    "heading2": "Chụp ảnh thẻ Đà Nẵng",
+    "subtitle": "Chọn kích thước, xem mẫu và nhận ảnh trong ngày. Mỗi bức ảnh được chỉnh sáng tự nhiên, đúng quy định giấy tờ.",
+    "heading2": "Chụp ảnh thẻ lấy ngay",
     "category": "Danh mục ảnh thẻ",
     "item_label": "Ảnh thẻ"
   },

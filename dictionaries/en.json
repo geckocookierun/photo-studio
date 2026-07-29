@@ -1,14 +1,14 @@
 {
   "metadata": {
-    "title": "Nhat Studio - Professional Photography Services",
-    "description": "Professional photography services for ID photos, portraits and special occasions with professional editing"
+    "title": "ID Photos Da Nang | Visa & Passport Same-day - Nhat Studio",
+    "description": "Professional ID, visa and passport photos in Da Nang — natural retouching, same-day pickup. Nhat Studio, 254/9 Hoang Dieu. Call 0909939351."
   },
   "home": {
     "banner": {
       "aria_label": "Studio Introduction",
-      "background_alt": "Nhat Studio - Professional Photography Services",
-      "title": "Nhat Studio",
-      "description": "\"We specialize in professional photography services with years of experience. From ID photos, portraits, profiles to family photos, we are committed to bringing you the most beautiful moments.\"",
+      "background_alt": "ID photo studio in Da Nang - Nhat Studio",
+      "title": "ID Photos in Da Nang",
+      "description": "\"ID, visa, profile and portrait photos — same-day at Nhat Studio. Document-ready, naturally edited.\"",
       "cta_aria_label": "Book a photo session - Call 0909939351",
       "photo_alt": "Sample photo {index} at Nhat Studio"
     },
@@ -237,13 +237,13 @@
     }
   },
   "id_photos": {
-    "title": "ID Photos, Passport & Visa - Nhat Studio",
-    "description": "High-quality ID photo services for all types of documents and applications in Da Nang",
-    "heading": "ID Photo Services in Da Nang",
-    "subtitle": "Instant delivery of ID photos for friends and loyal customers in Da Nang. Every photo taken and edited by Nhat carries a touch of emotion.",
-    "heading2": "ID Photo Services in Da Nang",
+    "title": "ID, Passport & Visa Photos in Da Nang | Nhat Studio",
+    "description": "Document-ready ID photos in Da Nang — 3x4, 4x6, visa sizes. Same-day at Nhat Studio, Hoang Dieu.",
+    "heading": "ID Photos in Da Nang",
+    "subtitle": "Pick a size, browse samples, and collect the same day. Natural lighting and regulation-compliant edits.",
+    "heading2": "Same-day ID photos",
     "category": "ID Photo Categories",
-    "item_label": "Card photo"
+    "item_label": "ID photo"
   },
   "photo_restoration": {
     "title": "Photo Restoration",

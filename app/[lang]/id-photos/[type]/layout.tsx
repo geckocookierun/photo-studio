@@ -1,10 +1,14 @@
 import { ValidLocale } from "@/lib/i18n/config";
 import Footer from "@/components/footer";
 import Header from "@/components/header";
+import { CloudinaryImage } from "@/components/CloudinaryImage";
 import { PhotoMenu } from "@/components/photo-menu";
+import { getPhotoSizeMeta } from "@/lib/seo/id-photo-copy";
+import { PHOTO_TYPES } from "@/lib/photo-types";
+import { cloudinaryFolders, getImagesFromFolder } from "@/lib/utils";
 import { getDictionary } from "../../dictionaries";
-import Image from "next/image";
-import { Camera, CameraIcon, ImageIcon } from "lucide-react";
+import { Camera, ImageIcon } from "lucide-react";
+import Link from "next/link";
 
 export default async function PhotoLayout({
   children,
@@ -14,96 +18,60 @@ export default async function PhotoLayout({
   params: Promise<{ lang: ValidLocale; type: string }>;
 }) {
   const { lang, type } = await params;
-
   const dict = await getDictionary(lang);
+  const sizeMeta = getPhotoSizeMeta(lang, type);
+  const serviceCoverPhoto = await getImagesFromFolder(cloudinaryFolders.serviceCoverPhoto);
+  const heroUrl = serviceCoverPhoto.find((f) => f.title === "card")?.url;
+  const hub = lang === "vi" ? "/anh-the-ho-chieu" : "/id-passport-photos";
 
-  const photoTypes = [
-    {
-      id: "3x4",
-      label: dict.id_photos.item_label + " 3x4",
-      icon: <ImageIcon className="h-4 w-4" />,
-    },
-    {
-      id: "3.3x4.8",
-      label: dict.id_photos.item_label + " 3.3x4.8",
-      icon: <ImageIcon className="h-4 w-4" />,
-    },
-    {
-      id: "3.5x4.5",
-      label: dict.id_photos.item_label + " 3.5x4.5",
-      icon: <ImageIcon className="h-4 w-4" />,
-    },
-    {
-      id: "3.5x5",
-      label: dict.id_photos.item_label + " 3.5x5",
-      icon: <ImageIcon className="h-4 w-4" />,
-    },
-    {
-      id: "3.6x4.7",
-      label: dict.id_photos.item_label + " 3.6x4.7",
-      icon: <ImageIcon className="h-4 w-4" />,
-    },
-    {
-      id: "4x6",
-      label: dict.id_photos.item_label + " 4x6",
-      icon: <ImageIcon className="h-4 w-4" />,
-    },
-    {
-      id: "5x5",
-      label: dict.id_photos.item_label + " 5x5",
-      icon: <ImageIcon className="h-4 w-4" />,
-    },
-    {
-      id: "5x7",
-      label: dict.id_photos.item_label + " 5x7",
-      icon: <ImageIcon className="h-4 w-4" />,
-    },
-  ];
+  const photoTypes = PHOTO_TYPES.map((id) => ({
+    id,
+    label: `${dict.id_photos.item_label} ${id}`,
+    icon: <ImageIcon className="h-4 w-4" />,
+  }));
 
   const activeType = type || photoTypes[0].id;
 
   return (
     <div className="min-h-screen bg-white">
       <Header lang={lang} />
-      <section className="relative h-[300px] md:h-[400px]">
+      <section className="relative h-[280px] md:h-[360px] bg-slate-800">
         <div className="absolute inset-0 bg-gradient-to-r from-slate-900/90 to-slate-900/60 z-10" />
-        <Image
-          src="https://picsum.photos/id/1005/1920/600"
-          alt={dict.id_photos.title}
-          fill
-          priority
-          className="object-cover"
-          sizes="100vw"
-        />
+        {heroUrl ? (
+          <CloudinaryImage
+            src={heroUrl}
+            alt={sizeMeta.title}
+            width={1920}
+            height={600}
+            priority
+            className="object-cover absolute inset-0 w-full h-full"
+          />
+        ) : null}
         <div className="relative z-20 container mx-auto px-4 h-full flex flex-col justify-center">
-          <h1 className="text-3xl md:text-5xl font-bold text-white mb-4">{dict.id_photos.title}</h1>
-          <p className="text-xl md:text-2xl text-white/90 mb-8 max-w-2xl">
-            {dict.id_photos.description}
+          <p className="text-white/80 text-sm mb-2">
+            <Link href={hub} className="hover:text-white underline-offset-2 hover:underline">
+              {dict.id_photos.heading}
+            </Link>
+            <span className="mx-2">/</span>
+            <span>{activeType}</span>
+          </p>
+          <h1 className="font-display text-3xl md:text-5xl font-semibold text-white mb-4">
+            {lang === "vi" ? `Ảnh thẻ ${activeType} Đà Nẵng` : `${activeType} ID Photos in Da Nang`}
+          </h1>
+          <p className="text-lg md:text-xl text-white/90 max-w-2xl leading-relaxed">
+            {sizeMeta.description}
           </p>
         </div>
       </section>
 
-      <div className="container mx-auto lg:px-4">
-        <div className="relative bg-gray-100 py-16">
-          <div className="container mx-auto px-4 relative z-10">
-            <div className="flex items-center justify-center mb-4">
-              <CameraIcon className="h-10 w-10 mr-4 text-gray-700" />
-              <h1 className="text-3xl font-bold text-gray-900">{dict.id_photos.heading}</h1>
-            </div>
-            <p className="text-center max-w-2xl mx-auto text-gray-600">{dict.id_photos.subtitle}</p>
-          </div>
-        </div>
-      </div>
-
-      {/* Immediate Photo Section */}
-      <div className="container mx-auto px-4 py-12 text-center">
-        <div className="inline-flex items-center justify-center bg-gray-100 text-gray-800 px-6 py-3 rounded-md mb-8">
+      <div className="container mx-auto px-4 py-10 text-center">
+        <div className="inline-flex items-center justify-center bg-gray-100 text-gray-800 px-6 py-3 rounded-md mb-2">
           <Camera className="h-5 w-5 mr-2" />
-          <h2 className="text-xl font-medium">{dict.id_photos.heading2}</h2>
+          <h2 className="font-display text-xl font-semibold">{dict.id_photos.heading2}</h2>
         </div>
+        <p className="text-gray-600 max-w-2xl mx-auto mt-3">{dict.id_photos.subtitle}</p>
       </div>
 
-      {/* Photo Types Section with Left Menu */}
       <div className="container mx-auto px-4 pb-16">
         <div className="flex flex-col md:flex-row gap-8 bg-white rounded-xl shadow-xl">
           <PhotoMenu photoTypes={photoTypes} activeType={activeType} dict={dict} lang={lang} />
