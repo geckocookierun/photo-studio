@@ -27,7 +27,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { lang } = await params;
   const copy = pageCopy[lang] ?? pageCopy.vi;
-  const path = `/${lang}/blog`;
+  const path = `/blog`;
   const pageUrl = absoluteUrl(lang, path);
   const bannerHomepage = await getImagesFromFolder(cloudinaryFolders.bannerHomepage);
 
@@ -74,7 +74,7 @@ export default async function BlogIndexPage({ params }: { params: { lang: ValidL
             <h2 className="text-xl font-semibold mb-2">{post.title}</h2>
             <p className="text-gray-600 mb-4">{post.description}</p>
             <Link
-              href={`/${lang}/blog/${post.slug}`}
+              href={`/blog/${post.slug}`}
               className="inline-block bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
             >
               {copy.readMore}

@@ -27,9 +27,12 @@ export async function generateMetadata({
 
   const isValidLang = isValidLocale(lang) ? lang : defaultLocale;
   const dict = await getDictionary(isValidLang as ValidLocale);
-  const path = `/${isValidLang}/anh-the-ho-chieu/${type}`;
+  const path = lang === "vi" ? `/anh-the-ho-chieu/${type}` : `/id-passport-photos/${type}`;
   const pageUrl = absoluteUrl(isValidLang as ValidLocale, path);
   const serviceCoverPhoto = await getImagesFromFolder(cloudinaryFolders.serviceCoverPhoto);
+
+  const cover =
+    serviceCoverPhoto.find((f: CloudinaryImageType) => f.title === "card")?.url ?? undefined;
 
   return {
     title: dict.id_photos.title,
@@ -41,21 +44,23 @@ export async function generateMetadata({
       siteName: "Nhật Studio",
       locale: lang === "vi" ? "vi_VN" : "en_US",
       type: "website",
-      images: [
-        {
-          url: serviceCoverPhoto.find((f: CloudinaryImageType) => f.title === "card").url,
-          width: 1200,
-          height: 630,
-          alt: dict.id_photos.title,
-        },
-      ],
+      images: cover
+        ? [
+            {
+              url: cover,
+              width: 1200,
+              height: 630,
+              alt: dict.id_photos.title,
+            },
+          ]
+        : undefined,
     },
     alternates: buildPageAlternates(isValidLang as ValidLocale, path),
     twitter: {
       card: "summary_large_image",
       title: dict.id_photos.title,
       description: dict.id_photos.description,
-      images: [serviceCoverPhoto.find((f: CloudinaryImageType) => f.title === "card").url],
+      images: cover ? [cover] : undefined,
     },
   };
 }

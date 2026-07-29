@@ -22,7 +22,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { lang } = await params;
   const dict = await getDictionary(lang);
-  const path = `/${lang}/anh-ho-so-chuyen-nghiep`;
+  const path = "/anh-ho-so-chuyen-nghiep";
   const pageUrl = absoluteUrl(lang, path);
   const serviceCoverPhoto = await getImagesFromFolder(cloudinaryFolders.serviceCoverPhoto);
 

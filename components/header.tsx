@@ -12,19 +12,19 @@ export default async function Header({ lang }: { lang: string }) {
 
   const navItems = [
     {
-      href: `/${lang}#${dict.common.navigation.services.link}`,
+      href: `/#${dict.common.navigation.services.link}`,
       label: dict.common.navigation.services.label,
     },
     {
-      href: `/${lang}#${dict.common.navigation.about_us.link}`,
+      href: `/#${dict.common.navigation.about_us.link}`,
       label: dict.common.navigation.about_us.label,
     },
     {
-      href: `/${lang}#${dict.common.navigation.testimonials.link}`,
+      href: `/#${dict.common.navigation.testimonials.link}`,
       label: dict.common.navigation.testimonials.label,
     },
     {
-      href: `/${lang}#${dict.common.navigation.contact.link}`,
+      href: `/#${dict.common.navigation.contact.link}`,
       label: dict.common.navigation.contact.label,
     },
   ];
@@ -37,7 +37,7 @@ export default async function Header({ lang }: { lang: string }) {
         <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" role="navigation">
           <div className="flex justify-between items-center py-3">
             {/* Logo */}
-            <Link href={`/${lang}`} className="flex items-center space-x-2">
+            <Link href="/" className="flex items-center space-x-2">
               <CloudinaryImage
                 src={
                   serviceCoverPhoto.find((image: CloudinaryImageType) => image.title === "logo")

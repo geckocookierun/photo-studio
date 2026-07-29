@@ -1,62 +1,69 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import type { ValidLocale } from "@/lib/i18n/config";
 
-function withPathnameHeader(request: NextRequest) {
-  const response = NextResponse.next();
-  response.headers.set("x-pathname", request.nextUrl.pathname);
-  return response;
+const VI_ORIGIN = process.env.NEXT_PUBLIC_VI_DOMAIN || "https://chupanhthedanang.vn";
+const EN_ORIGIN = process.env.NEXT_PUBLIC_EN_DOMAIN || "https://photoboothdanang.vn";
+
+function getLocaleFromHost(host: string): ValidLocale {
+  if (host.includes("photoboothdanang")) return "en";
+  return "vi";
 }
 
-function permanentRedirect(request: NextRequest, pathname: string) {
-  const url = request.nextUrl.clone();
-  url.pathname = pathname;
-  return NextResponse.redirect(url, 308);
-}
-
-export function middleware(request: NextRequest) {
-  const { pathname, host } = request.nextUrl;
-
-  // Static assets / system routes — no locale redirect
-  if (
+function isStaticPath(pathname: string) {
+  return (
     pathname.startsWith("/_next") ||
     pathname.startsWith("/api") ||
     pathname.startsWith("/favicon") ||
     pathname.startsWith("/robots.txt") ||
     pathname.startsWith("/sitemap.xml") ||
-    pathname.match(/\.(ico|png|jpg|jpeg|svg|gif|webp|css|js|woff|woff2|ttf|eot)$/)
-  ) {
-    return withPathnameHeader(request);
+    !!pathname.match(/\.(ico|png|jpg|jpeg|svg|gif|webp|css|js|woff|woff2|ttf|eot)$/)
+  );
+}
+
+function stripLocalePrefix(pathname: string): string {
+  const stripped = pathname.replace(/^\/(vi|en)(?=\/|$)/, "");
+  return stripped || "/";
+}
+
+function withLocalePath(locale: ValidLocale, pathname: string): string {
+  if (pathname === "/") return `/${locale}`;
+  return `/${locale}${pathname.startsWith("/") ? pathname : `/${pathname}`}`;
+}
+
+export function middleware(request: NextRequest) {
+  const { pathname, host } = request.nextUrl;
+
+  if (isStaticPath(pathname)) {
+    return NextResponse.next();
   }
 
-  // Same rules for users and crawlers (avoids indexing wrong-language URLs)
-  if (host.includes("photoboothdanang.vn")) {
-    if (pathname.startsWith("/vi")) {
-      return permanentRedirect(request, pathname.replace(/^\/vi/, "/en"));
+  const locale = getLocaleFromHost(host);
+  const prefixMatch = pathname.match(/^\/(vi|en)(?=\/|$)/);
+
+  // Legacy /vi/... or /en/... → 301 to clean public URL (and correct domain if needed)
+  if (prefixMatch) {
+    const urlLocale = prefixMatch[1] as ValidLocale;
+    const cleanPath = stripLocalePrefix(pathname);
+
+    if (!host.includes("localhost") && urlLocale !== locale) {
+      const origin = urlLocale === "vi" ? VI_ORIGIN : EN_ORIGIN;
+      return NextResponse.redirect(new URL(cleanPath, origin.replace(/\/$/, "")), 301);
     }
-    if (pathname === "/") {
-      return permanentRedirect(request, "/en");
-    }
+
+    const url = request.nextUrl.clone();
+    url.pathname = cleanPath;
+    return NextResponse.redirect(url, 301);
   }
 
-  if (host.includes("chupanhthedanang.vn")) {
-    if (pathname.startsWith("/en")) {
-      return permanentRedirect(request, pathname.replace(/^\/en/, "/vi"));
-    }
-    if (pathname === "/") {
-      return permanentRedirect(request, "/vi");
-    }
-  }
+  // Public URL without prefix → rewrite internally to /{locale}/...
+  const rewriteUrl = request.nextUrl.clone();
+  rewriteUrl.pathname = withLocalePath(locale, pathname);
 
-  if (host.includes("localhost")) {
-    if (pathname.startsWith("/en")) {
-      return permanentRedirect(request, pathname.replace(/^\/en/, "/vi"));
-    }
-    if (pathname === "/") {
-      return permanentRedirect(request, "/vi");
-    }
-  }
-
-  return withPathnameHeader(request);
+  const response = NextResponse.rewrite(rewriteUrl);
+  response.headers.set("x-pathname", pathname);
+  response.headers.set("x-locale", locale);
+  return response;
 }
 
 export const config = {

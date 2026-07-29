@@ -6,5 +6,5 @@ export default function PhotoServiceDefault({
 }: {
   params: { lang: ValidLocale };
 }) {
-  redirect(lang === "vi" ? `/${lang}/anh-the-ho-chieu/3x4` : `/${lang}/id-passport-photos/3x4`);
+  redirect(lang === "vi" ? "/anh-the-ho-chieu/3x4" : "/id-passport-photos/3x4");
 }

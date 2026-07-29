@@ -84,7 +84,6 @@ export function PhotoMenu({ photoTypes, activeType, dict, lang }: PhotoMenuProps
             photoTypes={photoTypes}
             activeType={activeType}
             dict={dict}
-            lang={lang}
             path={path}
           />
         </nav>

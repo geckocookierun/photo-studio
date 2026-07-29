@@ -35,22 +35,22 @@ export default async function Footer({ lang }: { lang: string }) {
     quickLinks: [
       { href: "/", key: "home", label: dict.common.navigation.home },
       {
-        href: `/${lang}#${dict.common.navigation.about_us.link}`,
+        href: `/#${dict.common.navigation.about_us.link}`,
         key: `about_us`,
         label: dict.common.navigation.about_us.label,
       },
       {
-        href: `/${lang}#${dict.common.navigation.services.link}`,
+        href: `/#${dict.common.navigation.services.link}`,
         key: `services`,
         label: dict.common.navigation.services.label,
       },
       {
-        href: `/${lang}#${dict.common.navigation.testimonials.link}`,
+        href: `/#${dict.common.navigation.testimonials.link}`,
         key: `testimonials`,
         label: dict.common.navigation.testimonials.label,
       },
       {
-        href: `/${lang}#${dict.common.navigation.contact.link}`,
+        href: `/#${dict.common.navigation.contact.link}`,
         key: `contact`,
         label: dict.common.navigation.contact.label,
       },

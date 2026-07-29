@@ -2,6 +2,7 @@ import Banner from "@/components/banner";
 import { CloudinaryImage } from "@/components/CloudinaryImage";
 import Footer from "@/components/footer";
 import Header from "@/components/header";
+import Reveal from "@/components/reveal";
 import ServiceCard from "@/components/service-card";
 import TestimonialCard from "@/components/testimonial-card";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
@@ -21,7 +22,7 @@ export async function generateMetadata({
   const { lang } = await params;
   const isValidLang = isValidLocale(lang) ? lang : defaultLocale;
   const dict = await getDictionary(isValidLang as ValidLocale);
-  const pageUrl = absoluteUrl(isValidLang as ValidLocale, `/${isValidLang}`);
+  const pageUrl = absoluteUrl(isValidLang as ValidLocale, "/");
   const bannerHomepage = await getImagesFromFolder(cloudinaryFolders.bannerHomepage);
   return {
     title: dict.metadata.title,
@@ -35,19 +36,19 @@ export async function generateMetadata({
       type: "website",
       images: [
         {
-          url: bannerHomepage[0].url,
+          url: bannerHomepage[0]?.url,
           width: 1920,
           height: 600,
           alt: dict.metadata.title,
         },
       ],
     },
-    alternates: buildPageAlternates(isValidLang as ValidLocale, `/${isValidLang}`),
+    alternates: buildPageAlternates(isValidLang as ValidLocale, "/"),
     twitter: {
       card: "summary_large_image",
       title: dict.metadata.title,
       description: dict.metadata.description,
-      images: [bannerHomepage[0].url],
+      images: bannerHomepage[0]?.url ? [bannerHomepage[0].url] : undefined,
     },
   };
 }
@@ -69,74 +70,75 @@ export default async function Home({ params }: { params: { lang: string } }) {
       {/* Photography Services Section */}
       <section id={dict.common.navigation.services.link} className="py-16 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900">{dict.home.services.title}</h2>
-            <p className="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">
+          <Reveal className="text-center mb-12">
+            <h2 className="font-display text-3xl md:text-4xl font-semibold text-gray-900">
+              {dict.home.services.title}
+            </h2>
+            <p className="mt-4 text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
               {dict.home.services.subtitle}
             </p>
-          </div>
+          </Reveal>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {services.map((service, index) => (
-              <Card
-                key={index}
-                className="overflow-hidden border-0 shadow-lg transition-all duration-300 hover:scale-105"
-              >
-                <div className="">
-                  <Link
-                    href={service.link}
-                    className="text-rose-500 hover:text-rose-700 font-medium flex items-center gap-2 aspect-[5/4]"
-                  >
-                    <CloudinaryImage
-                      src={
-                        serviceCoverPhoto.find(
-                          (image: CloudinaryImageType) => image.title === service.imageUrl
-                        )?.url
-                      }
-                      alt={
-                        serviceCoverPhoto.find(
-                          (image: CloudinaryImageType) => image.title === service.imageUrl
-                        )?.title
-                      }
-                      width={600}
-                      height={500}
-                      className=" transition-transform duration-300 rounded-lg"
-                    />
-                  </Link>
-                </div>
-                <CardContent className="py-3 md:h-[140px]">
-                  <Link
-                    href={service.link}
-                    className="hover:text-blue-400 font-medium flex items-center gap-2"
-                  >
-                    <h3 className="text-xl font-bold mb-2">{service.title}</h3>
-                  </Link>
-                  <p className="text-gray-600">{service.description}</p>
-                </CardContent>
-                <CardFooter>
-                  <Link
-                    href={service.link}
-                    className="hover:text-blue-400 font-medium flex items-center gap-2"
-                  >
-                    {dict.home.services.view_details}
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="18"
-                      height="18"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="lucide lucide-arrow-right"
+              <Reveal key={index} delay={index * 80}>
+                <Card className="overflow-hidden border-0 shadow-lg transition-all duration-300 hover:scale-[1.03] hover:shadow-xl">
+                  <div className="">
+                    <Link
+                      href={service.link}
+                      className="text-rose-500 hover:text-rose-700 font-medium flex items-center gap-2 aspect-[5/4]"
                     >
-                      <path d="M5 12h14" />
-                      <path d="m12 5 7 7-7 7" />
-                    </svg>
-                  </Link>
-                </CardFooter>
-              </Card>
+                      <CloudinaryImage
+                        src={
+                          serviceCoverPhoto.find(
+                            (image: CloudinaryImageType) => image.title === service.imageUrl
+                          )?.url
+                        }
+                        alt={
+                          serviceCoverPhoto.find(
+                            (image: CloudinaryImageType) => image.title === service.imageUrl
+                          )?.title
+                        }
+                        width={600}
+                        height={500}
+                        className=" transition-transform duration-300 rounded-lg"
+                      />
+                    </Link>
+                  </div>
+                  <CardContent className="py-3 md:h-[140px]">
+                    <Link
+                      href={service.link}
+                      className="hover:text-blue-400 font-medium flex items-center gap-2"
+                    >
+                      <h3 className="text-xl font-semibold mb-2">{service.title}</h3>
+                    </Link>
+                    <p className="text-gray-600 leading-relaxed">{service.description}</p>
+                  </CardContent>
+                  <CardFooter>
+                    <Link
+                      href={service.link}
+                      className="hover:text-blue-400 font-medium flex items-center gap-2"
+                    >
+                      {dict.home.services.view_details}
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="18"
+                        height="18"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className="lucide lucide-arrow-right"
+                      >
+                        <path d="M5 12h14" />
+                        <path d="m12 5 7 7-7 7" />
+                      </svg>
+                    </Link>
+                  </CardFooter>
+                </Card>
+              </Reveal>
             ))}
           </div>
         </div>
@@ -145,28 +147,31 @@ export default async function Home({ params }: { params: { lang: string } }) {
       {/* Photo Editing Section */}
       <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900">{dict.home.photo_editing.title}</h2>
-            <p className="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">
+          <Reveal className="text-center mb-12">
+            <h2 className="font-display text-3xl md:text-4xl font-semibold text-gray-900">
+              {dict.home.photo_editing.title}
+            </h2>
+            <p className="mt-4 text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
               {dict.home.photo_editing.subtitle}
             </p>
-          </div>
+          </Reveal>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-8">
             {dict.home.photo_editing.services.map((service, index) => (
-              <ServiceCard
-                key={index}
-                icon={getServiceIcon(index)} // Create a helper function for icons
-                title={service.title}
-                description={service.description}
-                url={
-                  index === 0
-                    ? serviceCoverPhoto.find(
-                        (image: CloudinaryImageType) => image.title === "zalo_code"
-                      )?.url
-                    : ""
-                }
-              />
+              <Reveal key={index} delay={index * 70}>
+                <ServiceCard
+                  icon={getServiceIcon(index)}
+                  title={service.title}
+                  description={service.description}
+                  url={
+                    index === 0
+                      ? serviceCoverPhoto.find(
+                          (image: CloudinaryImageType) => image.title === "zalo_code"
+                        )?.url
+                      : ""
+                  }
+                />
+              </Reveal>
             ))}
           </div>
         </div>
@@ -174,30 +179,34 @@ export default async function Home({ params }: { params: { lang: string } }) {
 
       <section id={dict.common.navigation.testimonials.link} className="py-16 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900">{dict.home.why_choose_us.title}</h2>
-            <p className="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">
+          <Reveal className="text-center mb-12">
+            <h2 className="font-display text-3xl md:text-4xl font-semibold text-gray-900">
+              {dict.home.why_choose_us.title}
+            </h2>
+            <p className="mt-4 text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
               {dict.home.why_choose_us.subtitle}
             </p>
-          </div>
+          </Reveal>
 
           <div className="grid md:grid-cols-3 gap-8">
             {dict.home.why_choose_us.features.map((item, index) => (
-              <div key={index} className="bg-white p-8 rounded-lg shadow-md text-center">
-                <div className="w-16 h-16 bg-rose-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-8 w-8 text-rose-500"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    {getIconPath(index)}
-                  </svg>
+              <Reveal key={index} delay={index * 90}>
+                <div className="bg-white p-8 rounded-lg shadow-md text-center transition-shadow duration-300 hover:shadow-lg">
+                  <div className="w-16 h-16 bg-rose-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-8 w-8 text-rose-500"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      {getIconPath(index)}
+                    </svg>
+                  </div>
+                  <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
+                  <p className="text-gray-600 leading-relaxed">{item.description}</p>
                 </div>
-                <h3 className="text-xl font-bold mb-2">{item.title}</h3>
-                <p className="text-gray-600">{item.description}</p>
-              </div>
+              </Reveal>
             ))}
           </div>
         </div>
@@ -206,23 +215,26 @@ export default async function Home({ params }: { params: { lang: string } }) {
       {/* Fifth Section - Testimonials */}
       <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900">{dict.home.testimonials.title}</h2>
-            <p className="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">
+          <Reveal className="text-center mb-12">
+            <h2 className="font-display text-3xl md:text-4xl font-semibold text-gray-900">
+              {dict.home.testimonials.title}
+            </h2>
+            <p className="mt-4 text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
               {dict.home.testimonials.subtitle}
             </p>
-          </div>
+          </Reveal>
 
           <div className="grid md:grid-cols-3 gap-8">
             {dict.home.testimonials.items.map((testimonial, index) => (
-              <TestimonialCard
-                key={index}
-                name={testimonial.name}
-                role={testimonial.role}
-                image={testimonial.image}
-                rating={testimonial.rating}
-                testimonial={testimonial.testimonial}
-              />
+              <Reveal key={index} delay={index * 90}>
+                <TestimonialCard
+                  name={testimonial.name}
+                  role={testimonial.role}
+                  image={testimonial.image}
+                  rating={testimonial.rating}
+                  testimonial={testimonial.testimonial}
+                />
+              </Reveal>
             ))}
           </div>
         </div>
@@ -231,92 +243,96 @@ export default async function Home({ params }: { params: { lang: string } }) {
       {/* Contact Section */}
       <section id={dict.common.navigation.contact.link} className="py-16 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900">{dict.home.contact.title}</h2>
-            <p className="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">
+          <Reveal className="text-center mb-12">
+            <h2 className="font-display text-3xl md:text-4xl font-semibold text-gray-900">
+              {dict.home.contact.title}
+            </h2>
+            <p className="mt-4 text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
               {dict.home.contact.subtitle}
             </p>
-          </div>
+          </Reveal>
 
           <div className="flex flex-col gap-4 md:grid md:grid-cols-2 md:gap-8 items-stretch">
-            {/* Contact  */}
-            <div className="bg-white p-6 rounded-lg shadow-md flex flex-col">
-              <h3 className="text-xl font-bold mb-4">{dict.home.contact.contact_information}</h3>
-              <div className="space-y-4 flex-grow">
-                <div className="flex items-start space-x-3">
-                  <MapPin className="text-rose-500 mt-1 flex-shrink-0" />
-                  <a
-                    href="https://maps.google.com/?q=254/9+Hoàng+Diệu,+Đà+Nẵng"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="hover:text-blue-300 transition-colors"
-                  >
-                    254/9 Hoàng Diệu, Đà Nẵng, Việt Nam
-                  </a>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <Phone className="text-rose-500 flex-shrink-0" />
-                  <div>
-                    <a href="tel:0909939351" className="hover:text-blue-300 transition-colors">
-                      0909939351
-                    </a>
-                    {" | "}
-                    <a href="tel:0905098084" className="hover:text-blue-300 transition-colors">
-                      0905098084
+            <Reveal>
+              <div className="bg-white p-6 rounded-lg shadow-md flex flex-col h-full">
+                <h3 className="text-xl font-semibold mb-4">{dict.home.contact.contact_information}</h3>
+                <div className="space-y-4 flex-grow">
+                  <div className="flex items-start space-x-3">
+                    <MapPin className="text-rose-500 mt-1 flex-shrink-0" />
+                    <a
+                      href="https://maps.google.com/?q=254/9+Hoàng+Diệu,+Đà+Nẵng"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="hover:text-blue-300 transition-colors"
+                    >
+                      254/9 Hoàng Diệu, Đà Nẵng, Việt Nam
                     </a>
                   </div>
+                  <div className="flex items-center space-x-3">
+                    <Phone className="text-rose-500 flex-shrink-0" />
+                    <div>
+                      <a href="tel:0909939351" className="hover:text-blue-300 transition-colors">
+                        0909939351
+                      </a>
+                      {" | "}
+                      <a href="tel:0905098084" className="hover:text-blue-300 transition-colors">
+                        0905098084
+                      </a>
+                    </div>
+                  </div>
+                  <div className="flex items-center space-x-3">
+                    <Mail className="text-rose-500 flex-shrink-0" />
+                    <a
+                      href="mailto:nhatstudio.0909939351@gmail.com"
+                      className="hover:text-blue-300 transition-colors"
+                    >
+                      nhatstudio.0909939351@gmail.com
+                    </a>
+                  </div>
+                  <div className="flex items-center space-x-3">
+                    <MessageCircle className="text-rose-500 flex-shrink-0" />
+                    <Link
+                      href="https://zalo.me/0909939351"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-center hover:text-blue-300"
+                    >
+                      <p>Nhật Studio Zalo</p>
+                    </Link>
+                  </div>
+                  <div className="flex items-center space-x-3">
+                    <FacebookIcon className="text-rose-500 flex-shrink-0" />
+                    <Link
+                      href="https://www.facebook.com/ChupAnhTheDaNang.NhatStudio/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-center hover:text-blue-300"
+                    >
+                      <p>Chụp Ảnh Thẻ Đà Nẵng - NHẬT Studio</p>
+                    </Link>
+                  </div>
                 </div>
-                <div className="flex items-center space-x-3">
-                  <Mail className="text-rose-500 flex-shrink-0" />
-                  <a
-                    href="mailto:nhatstudio.0909939351@gmail.com"
-                    className="hover:text-blue-300 transition-colors"
-                  >
-                    nhatstudio.0909939351@gmail.com
-                  </a>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <MessageCircle className="text-rose-500 flex-shrink-0" />
-                  <Link
-                    href="https://zalo.me/0909939351"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center justify-center hover:text-blue-300"
-                  >
-                    <p>Nhật Studio Zalo</p>
-                  </Link>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <FacebookIcon className="text-rose-500 flex-shrink-0" />
-                  <Link
-                    href="https://www.facebook.com/ChupAnhTheDaNang.NhatStudio/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center justify-center hover:text-blue-300"
-                  >
-                    <p>Chụp Ảnh Thẻ Đà Nẵng - NHẬT Studio</p>
-                  </Link>
+                <div>
+                  <h3 className="text-xl font-semibold mt-4">Giờ mở cửa</h3>
+                  <p>Thứ Hai - Thứ Bảy: 8:00 - 19:00</p>
+                  <p>Chủ Nhật: 8:00 - 17:00</p>
                 </div>
               </div>
-              <div>
-                <h3 className="text-xl font-bold mt-4">Giờ mở cửa</h3>
-                <p>Thứ Hai - Thứ Bảy: 8:00 - 19:00</p>
-                <p>Chủ Nhật: 8:00 - 17:00</p>
-              </div>
-            </div>
+            </Reveal>
 
-            {/* Google Map */}
-            <div className="bg-gray-200 rounded-lg overflow-hidden flex">
-              <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d239.63225401400408!2d108.21637842804198!3d16.059465841677223!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x314219be4de295c1%3A0x32aa91831c5d6030!2zTkjhuqxUIFNUVURJTw!5e0!3m2!1svi!2s!4v1745597814112!5m2!1svi!2s"
-                className="w-full aspect-video rounded-xl"
-                allowFullScreen={true}
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-                title="Bản đồ đến Nhật Studio"
-                aria-label="Bản đồ chỉ đường đến Nhật Studio"
-              />
-            </div>
+            <Reveal delay={120}>
+              <div className="bg-gray-200 rounded-lg overflow-hidden flex h-full min-h-[280px]">
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d239.63225401400408!2d108.21637842804198!3d16.059465841677223!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x314219be4de295c1%3A0x32aa91831c5d6030!2zTkjhuqxUIFNUVURJTw!5e0!3m2!1svi!2s!4v1745597814112!5m2!1svi!2s"
+                  className="w-full aspect-video rounded-xl min-h-[280px]"
+                  allowFullScreen={true}
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  title="Bản đồ đến Nhật Studio"
+                  aria-label="Bản đồ chỉ đường đến Nhật Studio"
+                />
+              </div>
+            </Reveal>
           </div>
         </div>
       </section>
@@ -325,32 +341,38 @@ export default async function Home({ params }: { params: { lang: string } }) {
       <section id={dict.common.navigation.about_us.link} className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div className="relative h-[500px]">
-              <CloudinaryImage
-                src={
-                  serviceCoverPhoto.find(
-                    (image: CloudinaryImageType) => image.title === "nhat_avatar"
-                  )?.url
-                }
-                alt={
-                  serviceCoverPhoto.find(
-                    (image: CloudinaryImageType) => image.title === "nhat_avatar"
-                  )?.title
-                }
-                width={600}
-                height={500}
-                className=" transition-transform duration-300 rounded-lg"
-              />
-            </div>
+            <Reveal>
+              <div className="relative h-[500px]">
+                <CloudinaryImage
+                  src={
+                    serviceCoverPhoto.find(
+                      (image: CloudinaryImageType) => image.title === "nhat_avatar"
+                    )?.url
+                  }
+                  alt={
+                    serviceCoverPhoto.find(
+                      (image: CloudinaryImageType) => image.title === "nhat_avatar"
+                    )?.title
+                  }
+                  width={600}
+                  height={500}
+                  className=" transition-transform duration-300 rounded-lg"
+                />
+              </div>
+            </Reveal>
 
-            <div>
-              <h2 className="text-3xl font-bold text-gray-900 mb-6">{dict.home.about.title}</h2>
-              {dict.home.about.content.map((paragraph, index) => (
-                <p key={index} className="text-lg text-gray-600 mb-4">
-                  {paragraph}
-                </p>
-              ))}
-            </div>
+            <Reveal delay={140}>
+              <div>
+                <h2 className="font-display text-3xl md:text-4xl font-semibold text-gray-900 mb-6">
+                  {dict.home.about.title}
+                </h2>
+                {dict.home.about.content.map((paragraph, index) => (
+                  <p key={index} className="text-lg text-gray-600 mb-4 leading-relaxed">
+                    {paragraph}
+                  </p>
+                ))}
+              </div>
+            </Reveal>
           </div>
         </div>
       </section>

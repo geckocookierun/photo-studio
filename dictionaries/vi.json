@@ -19,25 +19,25 @@
         {
           "title": "Ảnh Thẻ, Hộ Chiếu & Visa",
           "description": "Chụp ảnh thẻ đạt chuẩn cho mọi loại giấy tờ",
-          "link": "/vi/anh-the-ho-chieu",
+          "link": "/anh-the-ho-chieu",
           "imageUrl": "card"
         },
         {
           "title": "Chụp ảnh Profile cá nhân chuyên nghiệp",
           "description": "Tôn vinh vẻ đẹp tự nhiên của bạn",
-          "link": "/vi/anh-ho-so-chuyen-nghiep",
+          "link": "/anh-ho-so-chuyen-nghiep",
           "imageUrl": "profile"
         },
         {
           "title": "Chụp ảnh tốt nghiệp",
           "description": "Lưu giữ khoảnh khắc trưởng thành - Hành trình mới bắt đầu",
-          "link": "/vi/chup-anh-tot-nghiep",
+          "link": "/chup-anh-tot-nghiep",
           "imageUrl": "graduation"
         },
         {
           "title": "Phục Hồi Ảnh Cũ",
           "description": "Hồi sinh ký ức - Giữ trọn yêu thương",
-          "link": "/vi/phuc-hoi-anh-cu",
+          "link": "/phuc-hoi-anh-cu",
           "imageUrl": "recovery"
         }
       ],

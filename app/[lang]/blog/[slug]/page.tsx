@@ -20,7 +20,7 @@ export async function generateMetadata({
   if (!post) return {};
 
   const copy = post.content[lang] ?? post.content.vi;
-  const path = `/${lang}/blog/${slug}`;
+  const path = `/blog/${slug}`;
   const pageUrl = absoluteUrl(lang, path);
   const bannerHomepage = await getImagesFromFolder(cloudinaryFolders.bannerHomepage);
 

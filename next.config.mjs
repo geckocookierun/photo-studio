@@ -24,6 +24,7 @@ const nextConfig = {
   },
 
   async rewrites() {
+    // Internal paths still use /vi and /en after middleware rewrite
     return [
       {
         source: "/vi/anh-the-ho-chieu/:path*",
@@ -38,24 +39,12 @@ const nextConfig = {
         destination: "/vi/professional-profile-photos",
       },
       {
-        source: "/en/professional-profile-photos",
-        destination: "/en/professional-profile-photos",
-      },
-      {
         source: "/vi/chup-anh-tot-nghiep",
         destination: "/vi/graduation-photos",
       },
       {
-        source: "/en/graduation-photos",
-        destination: "/en/graduation-photos",
-      },
-      {
         source: "/vi/phuc-hoi-anh-cu",
         destination: "/vi/photo-restoration",
-      },
-      {
-        source: "/en/photo-restoration",
-        destination: "/en/photo-restoration",
       },
     ];
   },

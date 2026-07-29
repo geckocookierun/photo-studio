@@ -41,10 +41,16 @@ export function getPathWithoutLocale(pathname: string): string {
   return segments.slice(isValidLocale(segments[1]) ? 2 : 1).join("/") || "/";
 }
 
-/** Add locale prefix to path */
+/** Add locale prefix — kept for internal app routes only. Public URLs omit this. */
 export function addLocalePrefix(path: string, locale: ValidLocale): string {
   const normalizedPath = normalizePath(path);
   return `/${locale}${normalizedPath === "/" ? "" : normalizedPath}`;
+}
+
+/** Public path without locale prefix (domain implies language). */
+export function toPublicPath(path: string): string {
+  const normalizedPath = normalizePath(path);
+  return getPathWithoutLocale(normalizedPath);
 }
 
 export const i18n = {

@@ -7,6 +7,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useLanguage } from "@/contexts/language-provider";
 import { locales, type ValidLocale } from "@/lib/i18n/config";
 import { getDomainByLocale, localizePathname } from "@/lib/i18n/seo";
 import { Globe } from "lucide-react";
@@ -20,27 +21,25 @@ const languageNames: Record<string, string> = {
 export default function LanguageSwitcher() {
   const router = useRouter();
   const pathname = usePathname();
+  const currentLocale = useLanguage();
 
   const switchLanguage = (newLocale: ValidLocale) => {
     const path = localizePathname(pathname, newLocale);
     const origin = getDomainByLocale(newLocale);
-    // Cross-domain when env domains are absolute; otherwise stay on-site for local
+
     if (origin.startsWith("http") && typeof window !== "undefined") {
-      const currentHost = window.location.host;
       try {
         const targetHost = new URL(origin).host;
-        if (targetHost !== currentHost) {
+        if (targetHost !== window.location.host) {
           window.location.assign(`${origin}${path}`);
           return;
         }
       } catch {
-        // fall through to same-origin navigation
+        // fall through
       }
     }
     router.push(path);
   };
-
-  const currentLocale = pathname.split("/")[1];
 
   return (
     <DropdownMenu>

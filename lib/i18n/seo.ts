@@ -27,17 +27,20 @@ export function toPathname(urlOrPath: string): string {
   return path.split("?")[0].split("#")[0] || "/";
 }
 
+/** Remove /vi or /en prefix from a path. */
+export function stripLocalePrefix(pathname: string): string {
+  const path = toPathname(pathname);
+  const stripped = path.replace(/^\/(vi|en)(?=\/|$)/, "");
+  return stripped || "/";
+}
+
 /**
- * Convert a pathname to the equivalent path for targetLocale,
- * including locale prefix and localized service slugs.
+ * Public pathname for targetLocale (no /vi or /en prefix).
+ * Domain already implies language.
  */
 export function localizePathname(pathname: string, targetLocale: ValidLocale): string {
-  const path = toPathname(pathname);
+  const path = stripLocalePrefix(pathname);
   const segments = path.split("/").filter(Boolean);
-
-  if (segments[0] === "vi" || segments[0] === "en") {
-    segments.shift();
-  }
 
   const mapped = segments.map((segment) => {
     const match = localizedSlugs.find((item) =>
@@ -47,10 +50,10 @@ export function localizePathname(pathname: string, targetLocale: ValidLocale): s
     return targetLocale === "vi" ? match.viUrl : match.enUrl;
   });
 
-  return mapped.length ? `/${targetLocale}/${mapped.join("/")}` : `/${targetLocale}`;
+  return mapped.length ? `/${mapped.join("/")}` : "/";
 }
 
-/** Absolute URL for a locale + any current path (slugs remapped). */
+/** Absolute public URL for a locale + path (slugs remapped, no locale prefix). */
 export function absoluteUrl(locale: ValidLocale, pathname: string): string {
   return `${getDomainByLocale(locale)}${localizePathname(pathname, locale)}`;
 }

@@ -19,25 +19,25 @@
         {
           "title": "ID Photos, Passport & Visa",
           "description": "Standard ID photos for all types of documents",
-          "link": "/en/id-passport-photos",
+          "link": "/id-passport-photos",
           "imageUrl": "card"
         },
         {
           "title": "Professional Profile Photography",
           "description": "Highlighting your natural beauty",
-          "link": "/en/professional-profile-photos",
+          "link": "/professional-profile-photos",
           "imageUrl": "profile"
         },
         {
           "title": "Graduation Photos",
           "description": "Preserving the moment of maturity - A new journey begins",
-          "link": "/en/graduation-photos",
+          "link": "/graduation-photos",
           "imageUrl": "graduation"
         },
         {
           "title": "Photo Restoration",
           "description": "Reviving memories - Preserving love",
-          "link": "/en/photo-restoration",
+          "link": "/photo-restoration",
           "imageUrl": "recovery"
         }
       ],
