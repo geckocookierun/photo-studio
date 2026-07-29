@@ -6,7 +6,7 @@ interface ServiceCardProps {
   icon: "edit" | "cloud" | "ruler" | "wand";
   title: string;
   description?: string;
-  url?: string; // Optional URL for images
+  url?: string;
 }
 
 export default function ServiceCard({ icon, title, description, url }: ServiceCardProps) {
@@ -26,32 +26,34 @@ export default function ServiceCard({ icon, title, description, url }: ServiceCa
   };
 
   return (
-    <Card className="border-0 shadow-md hover:shadow-lg transition-shadow">
-      <CardContent className="p-6">
-        <div className="w-12 h-12 bg-rose-100 rounded-full flex items-center justify-center mb-4">
+    <Card className="border-0 shadow-md hover:shadow-lg transition-shadow h-full">
+      <CardContent className="p-6 flex flex-col h-full">
+        <div className="w-12 h-12 bg-rose-100 rounded-full flex items-center justify-center mb-4 shrink-0">
           {getIcon()}
         </div>
-        <h3 className="text-xl font-bold mb-2">{title}</h3>
-        {description && <p className="text-gray-600">{description}</p>}
-        {url && (
-          <div className="flex justify-center mt-4 gap-2 flex-col">
-            <div className="flex items-center space-x-3">
-              <Phone className="text-rose-500 flex-shrink-0" />
-              <div>
-                <a href="tel:0909939351" className="hover:text-blue-300 transition-colors">
-                  0909939351
-                </a>
-              </div>
+        <h3 className="text-lg font-semibold mb-2 leading-snug">{title}</h3>
+        {description ? (
+          <p className="text-gray-600 text-sm leading-relaxed flex-1">{description}</p>
+        ) : (
+          <div className="flex-1" />
+        )}
+        {url ? (
+          <div className="mt-4 pt-3 border-t border-gray-100 flex flex-col items-start gap-3">
+            <div className="flex items-center space-x-2">
+              <Phone className="text-rose-500 flex-shrink-0 h-4 w-4" />
+              <a href="tel:0909939351" className="text-sm hover:text-blue-300 transition-colors">
+                0909939351
+              </a>
             </div>
             <CloudinaryImage
               src={url}
               alt={title}
-              width={120}
-              height={120}
-              className=" transition-transform duration-300 rounded-lg"
+              width={96}
+              height={96}
+              className="rounded-md"
             />
           </div>
-        )}
+        ) : null}
       </CardContent>
     </Card>
   );

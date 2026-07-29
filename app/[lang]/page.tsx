@@ -156,9 +156,9 @@ export default async function Home({ params }: { params: { lang: string } }) {
             </p>
           </Reveal>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-8">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
             {dict.home.photo_editing.services.map((service, index) => (
-              <Reveal key={index} delay={index * 70}>
+              <Reveal key={service.title} delay={index * 70} className="h-full">
                 <ServiceCard
                   icon={getServiceIcon(index)}
                   title={service.title}
