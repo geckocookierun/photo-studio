@@ -1,14 +1,32 @@
 import { getDictionary } from "@/app/[lang]/dictionaries";
 import { ValidLocale } from "@/lib/i18n/config";
 import { cloudinaryFolders, CloudinaryImageType, getImagesFromFolder } from "@/lib/utils";
-import Image from "next/image";
+import { getCldImageUrl } from "next-cloudinary";
+import { headers } from "next/headers";
 import Link from "next/link";
 import { CloudinaryImage } from "./CloudinaryImage";
+import DeferredChatButtons from "./deferred-chat-buttons";
 import LanguageSwitcher from "./language-switcher";
-import { MobileNav } from "./MobileMenu";
+import MobileNavClient from "./mobile-nav-client";
+
+function toPublicId(src: string): string {
+  if (!src.includes("res.cloudinary.com") && !src.includes("/upload/")) {
+    return src.replace(/\.[a-zA-Z0-9]+$/, "");
+  }
+  try {
+    const pathname = new URL(src).pathname;
+    const afterUpload = pathname.split("/upload/")[1];
+    if (!afterUpload) return src;
+    return afterUpload.replace(/^v\d+\//, "").replace(/\.[a-zA-Z0-9]+$/, "");
+  } catch {
+    return src;
+  }
+}
 
 export default async function Header({ lang }: { lang: string }) {
   const dict = await getDictionary(lang as ValidLocale);
+  const headersList = await headers();
+  const pathname = headersList.get("x-pathname") || "/";
 
   const navItems = [
     {
@@ -30,32 +48,35 @@ export default async function Header({ lang }: { lang: string }) {
   ];
 
   const serviceCoverPhoto = await getImagesFromFolder(cloudinaryFolders.serviceCoverPhoto);
+  const logo = serviceCoverPhoto.find((image: CloudinaryImageType) => image.title === "logo");
+  const logoUrl = logo?.url
+    ? getCldImageUrl({
+        src: toPublicId(logo.url),
+        width: 150,
+        height: 50,
+        crop: "fill",
+        quality: 75,
+        format: "auto",
+      })
+    : undefined;
 
   return (
     <>
-      <header className="bg-white shadow-sm ">
+      <header className="bg-white shadow-sm">
         <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" role="navigation">
           <div className="flex justify-between items-center py-3">
-            {/* Logo */}
             <Link href="/" className="flex items-center space-x-2">
               <CloudinaryImage
-                src={
-                  serviceCoverPhoto.find((image: CloudinaryImageType) => image.title === "logo")
-                    ?.url
-                }
-                alt={
-                  serviceCoverPhoto.find((image: CloudinaryImageType) => image.title === "logo")
-                    ?.title
-                }
+                src={logo?.url}
+                alt={logo?.title || "Nhật Studio"}
                 width={150}
                 height={50}
                 quality={75}
                 sizes="150px"
-                className=" transition-transform duration-300 rounded-lg"
+                className="transition-transform duration-300 rounded-lg"
               />
             </Link>
 
-            {/* Navigation Links */}
             <div className="hidden md:flex items-center space-x-8">
               {navItems.map((item) => (
                 <Link
@@ -68,9 +89,8 @@ export default async function Header({ lang }: { lang: string }) {
               ))}
             </div>
 
-            {/* Actions */}
-            <div className="flex items-center space-x-4">
-              <LanguageSwitcher />
+            <div className="flex items-center space-x-3">
+              <LanguageSwitcher lang={lang as ValidLocale} pathname={pathname} />
               <Link
                 href="https://www.facebook.com/messages/t/116514626424223"
                 target="_blank"
@@ -79,37 +99,16 @@ export default async function Header({ lang }: { lang: string }) {
               >
                 {dict.common.book_now}
               </Link>
+              <MobileNavClient
+                navItems={navItems}
+                logoUrl={logoUrl}
+                logoAlt={logo?.title || "Nhật Studio"}
+              />
             </div>
           </div>
         </nav>
       </header>
-      <div className="fixed bottom-4 left-4 flex flex-col space-y-3 z-50">
-        <MobileNav lang={lang as ValidLocale} dict={dict} navItems={navItems} />
-      </div>
-      <div className="fixed bottom-4 right-4 flex flex-col space-y-3 z-50">
-        <Link
-          href="https://zalo.me/0909939351"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex items-center justify-center"
-        >
-          <Image src="/zalo-logo.png" alt="Zalo Logo" width={48} height={48} loading="lazy" />
-        </Link>
-        <Link
-          href="https://www.facebook.com/messages/t/116514626424223"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex items-center justify-center"
-        >
-          <Image
-            src="/facebook-messenger.png"
-            alt="Messenger Logo"
-            width={36}
-            height={36}
-            loading="lazy"
-          />
-        </Link>
-      </div>
+      <DeferredChatButtons />
     </>
   );
 }

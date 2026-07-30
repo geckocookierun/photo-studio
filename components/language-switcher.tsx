@@ -1,65 +1,40 @@
-"use client";
-
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { useLanguage } from "@/contexts/language-provider";
 import { locales, type ValidLocale } from "@/lib/i18n/config";
 import { getDomainByLocale, localizePathname } from "@/lib/i18n/seo";
-import { Globe } from "lucide-react";
-import { usePathname, useRouter } from "next/navigation";
 
 const languageNames: Record<string, string> = {
-  en: "English",
-  vi: "Tiếng Việt",
+  en: "EN",
+  vi: "VI",
 };
 
-export default function LanguageSwitcher() {
-  const router = useRouter();
-  const pathname = usePathname();
-  const currentLocale = useLanguage();
-
-  const switchLanguage = (newLocale: ValidLocale) => {
-    const path = localizePathname(pathname, newLocale);
-    const origin = getDomainByLocale(newLocale);
-
-    if (origin.startsWith("http") && typeof window !== "undefined") {
-      try {
-        const targetHost = new URL(origin).host;
-        if (targetHost !== window.location.host) {
-          window.location.assign(`${origin}${path}`);
-          return;
-        }
-      } catch {
-        // fall through
-      }
-    }
-    router.push(path);
-  };
-
+/** Server component — plain links, no Radix/dropdown JS. */
+export default function LanguageSwitcher({
+  lang,
+  pathname = "/",
+}: {
+  lang: ValidLocale;
+  pathname?: string;
+}) {
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="icon">
-          <Globe className="text-cyan-700" />
-          <span className="sr-only">Switch language</span>
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
-        {locales.map((locale) => (
-          <DropdownMenuItem
+    <div className="flex items-center gap-1 text-sm font-medium" role="group" aria-label="Language">
+      {locales.map((locale) => {
+        const href = `${getDomainByLocale(locale)}${localizePathname(pathname, locale)}`;
+        const active = locale === lang;
+        return (
+          <a
             key={locale}
-            className={currentLocale === locale ? "font-bold cursor-pointer" : "cursor-pointer"}
-            onClick={() => switchLanguage(locale)}
+            href={href}
+            hrefLang={locale === "vi" ? "vi-VN" : "en-US"}
+            className={
+              active
+                ? "px-2 py-1 rounded-md bg-rose-50 text-rose-600"
+                : "px-2 py-1 rounded-md text-gray-600 hover:text-rose-500"
+            }
+            aria-current={active ? "true" : undefined}
           >
             {languageNames[locale]}
-          </DropdownMenuItem>
-        ))}
-      </DropdownMenuContent>
-    </DropdownMenu>
+          </a>
+        );
+      })}
+    </div>
   );
 }

@@ -7,18 +7,17 @@ import { buildPageAlternates } from "@/lib/i18n/seo";
 import { buildLocalBusinessJsonLd } from "@/lib/seo/structured-data";
 import JsonLd from "@/components/json-ld";
 import "./globals.css";
-import { LanguageProvider } from "@/contexts/language-provider";
 
 const sans = Be_Vietnam_Pro({
   subsets: ["latin", "vietnamese"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["400", "600"],
   variable: "--font-sans",
   display: "swap",
 });
 
 const display = Playfair_Display({
   subsets: ["latin", "vietnamese"],
-  weight: ["500", "600", "700"],
+  weight: ["600"],
   variable: "--font-display",
   display: "swap",
 });
@@ -62,7 +61,7 @@ export default async function RootLayout({
     <html lang={isValidLang} suppressHydrationWarning className={`${sans.variable} ${display.variable}`}>
       <body className={`${sans.className} antialiased`}>
         <JsonLd data={buildLocalBusinessJsonLd(isValidLang as ValidLocale)} />
-        <LanguageProvider lang={isValidLang as ValidLocale}>{children}</LanguageProvider>
+        {children}
       </body>
     </html>
   );
