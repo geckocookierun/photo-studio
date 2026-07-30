@@ -14,24 +14,47 @@ interface CloudinaryImageProps {
   fetchPriority?: "high" | "low" | "auto";
 }
 
-/** Turn a Cloudinary delivery URL into a public_id for transforms. */
-function toPublicId(src: string): string {
-  if (!src.includes("res.cloudinary.com") && !src.includes("/upload/")) {
-    return src.replace(/\.[a-zA-Z0-9]+$/, "");
+/**
+ * Insert Cloudinary transforms into an existing delivery URL.
+ * Avoids re-parsing/encoding Unicode public_ids (which broke BÌA cover).
+ */
+function buildOptimizedUrl(
+  src: string,
+  width: number,
+  height: number,
+  quality: number | `${number}` | "auto"
+): string {
+  const q =
+    typeof quality === "number"
+      ? `q_${quality}`
+      : quality === "auto"
+        ? "q_auto"
+        : `q_${quality}`;
+  const transforms = `c_fill,w_${width},h_${height},g_auto,f_auto,${q}`;
+
+  if (src.includes("res.cloudinary.com") && src.includes("/upload/")) {
+    // Drop a previous transform segment (comma-separated) if present, keep version + public_id
+    const withoutOld = src.replace(
+      /\/upload\/(?:[^/]*,[^/]*\/)+/,
+      "/upload/"
+    );
+    return withoutOld.replace("/upload/", `/upload/${transforms}/`);
   }
-  try {
-    const pathname = new URL(src).pathname;
-    const afterUpload = pathname.split("/upload/")[1];
-    if (!afterUpload) return src;
-    return afterUpload.replace(/^v\d+\//, "").replace(/\.[a-zA-Z0-9]+$/, "");
-  } catch {
-    return src;
-  }
+
+  return getCldImageUrl({
+    src,
+    width,
+    height,
+    crop: "fill",
+    gravity: "auto",
+    quality,
+    format: "auto",
+  });
 }
 
 /**
- * Server Component — serves optimized Cloudinary URLs via next/image
- * without shipping next-cloudinary client JS (big TBT win).
+ * Server Component — optimized Cloudinary URLs via next/image
+ * without shipping next-cloudinary client JS.
  */
 export function CloudinaryImage({
   src,
@@ -46,15 +69,7 @@ export function CloudinaryImage({
 }: CloudinaryImageProps) {
   if (!src) return null;
 
-  const url = getCldImageUrl({
-    src: toPublicId(src),
-    width,
-    height,
-    crop: "fill",
-    gravity: "auto",
-    quality,
-    format: "auto",
-  });
+  const url = buildOptimizedUrl(src, width, height, quality);
 
   return (
     <Image
@@ -65,7 +80,6 @@ export function CloudinaryImage({
       className={cn("object-cover", className)}
       priority={priority}
       sizes={sizes}
-      // Load straight from Cloudinary CDN (skip Vercel image proxy hop)
       unoptimized
       loading={priority ? "eager" : "lazy"}
       fetchPriority={fetchPriority ?? (priority ? "high" : "auto")}

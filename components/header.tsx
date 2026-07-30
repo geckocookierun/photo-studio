@@ -1,27 +1,12 @@
 import { getDictionary } from "@/app/[lang]/dictionaries";
 import { ValidLocale } from "@/lib/i18n/config";
 import { cloudinaryFolders, CloudinaryImageType, getImagesFromFolder } from "@/lib/utils";
-import { getCldImageUrl } from "next-cloudinary";
 import { headers } from "next/headers";
 import Link from "next/link";
 import { CloudinaryImage } from "./CloudinaryImage";
 import DeferredChatButtons from "./deferred-chat-buttons";
 import LanguageSwitcher from "./language-switcher";
 import MobileNavClient from "./mobile-nav-client";
-
-function toPublicId(src: string): string {
-  if (!src.includes("res.cloudinary.com") && !src.includes("/upload/")) {
-    return src.replace(/\.[a-zA-Z0-9]+$/, "");
-  }
-  try {
-    const pathname = new URL(src).pathname;
-    const afterUpload = pathname.split("/upload/")[1];
-    if (!afterUpload) return src;
-    return afterUpload.replace(/^v\d+\//, "").replace(/\.[a-zA-Z0-9]+$/, "");
-  } catch {
-    return src;
-  }
-}
 
 export default async function Header({ lang }: { lang: string }) {
   const dict = await getDictionary(lang as ValidLocale);
@@ -49,16 +34,6 @@ export default async function Header({ lang }: { lang: string }) {
 
   const serviceCoverPhoto = await getImagesFromFolder(cloudinaryFolders.serviceCoverPhoto);
   const logo = serviceCoverPhoto.find((image: CloudinaryImageType) => image.title === "logo");
-  const logoUrl = logo?.url
-    ? getCldImageUrl({
-        src: toPublicId(logo.url),
-        width: 150,
-        height: 50,
-        crop: "fill",
-        quality: 75,
-        format: "auto",
-      })
-    : undefined;
 
   return (
     <>
@@ -101,7 +76,7 @@ export default async function Header({ lang }: { lang: string }) {
               </Link>
               <MobileNavClient
                 navItems={navItems}
-                logoUrl={logoUrl}
+                logoUrl={logo?.url}
                 logoAlt={logo?.title || "Nhật Studio"}
               />
             </div>
