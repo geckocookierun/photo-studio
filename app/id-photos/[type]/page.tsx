@@ -1,8 +1,7 @@
 import { PHOTO_TYPES } from "@/lib/photo-types";
-import { getDictionary } from "@/app/[lang]/dictionaries";
 import { CloudinaryImage } from "@/components/CloudinaryImage";
 import { Card, CardContent } from "@/components/ui/card";
-import { defaultLocale, isValidLocale, ValidLocale } from "@/lib/i18n/config";
+import { getRequestLocale } from "@/lib/i18n/locale";
 import { absoluteUrl, buildPageAlternates } from "@/lib/i18n/seo";
 import { getPhotoSizeMeta } from "@/lib/seo/id-photo-copy";
 import {
@@ -19,14 +18,13 @@ export async function generateStaticParams() {
 export async function generateMetadata({
   params,
 }: {
-  params: { lang: ValidLocale; type: string };
+  params: { type: string };
 }): Promise<Metadata> {
-  const { lang, type } = await params;
-
-  const isValidLang = isValidLocale(lang) ? lang : defaultLocale;
-  const meta = getPhotoSizeMeta(isValidLang, type);
+  const { type } = await params;
+  const lang = await getRequestLocale();
+  const meta = getPhotoSizeMeta(lang, type);
   const path = lang === "vi" ? `/anh-the-ho-chieu/${type}` : `/id-passport-photos/${type}`;
-  const pageUrl = absoluteUrl(isValidLang as ValidLocale, path);
+  const pageUrl = absoluteUrl(lang, path);
   const serviceCoverPhoto = await getImagesFromFolder(cloudinaryFolders.serviceCoverPhoto);
 
   const cover =
@@ -53,7 +51,7 @@ export async function generateMetadata({
           ]
         : undefined,
     },
-    alternates: buildPageAlternates(isValidLang as ValidLocale, path),
+    alternates: buildPageAlternates(lang, path),
     twitter: {
       card: "summary_large_image",
       title: meta.title,
@@ -75,7 +73,7 @@ function getPhotoDimensions(photoType: string) {
 export default async function PhotoService({
   params,
 }: {
-  params: { lang: ValidLocale; type: string };
+  params: { type: string };
 }) {
   const { type } = await params;
 

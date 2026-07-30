@@ -1,9 +1,10 @@
-import { getDictionary } from "@/app/[lang]/dictionaries";
+import { getDictionary } from "@/app/dictionaries";
 import { CloudinaryImage } from "@/components/CloudinaryImage";
 import Footer from "@/components/footer";
 import Header from "@/components/header";
 import { Button } from "@/components/ui/button";
 import { ValidLocale } from "@/lib/i18n/config";
+import { getRequestLocale } from "@/lib/i18n/locale";
 import { absoluteUrl, buildPageAlternates } from "@/lib/i18n/seo";
 import {
   cloudinaryFolders,
@@ -14,14 +15,10 @@ import { CameraIcon, MessageCircle, Phone } from "lucide-react";
 import { Metadata } from "next";
 import Link from "next/link";
 
-export async function generateMetadata({
-  params,
-}: {
-  params: { lang: ValidLocale };
-}): Promise<Metadata> {
-  const { lang } = await params;
+export async function generateMetadata(): Promise<Metadata> {
+  const lang = await getRequestLocale();
   const dict = await getDictionary(lang);
-  const path = "/anh-ho-so-chuyen-nghiep";
+  const path = lang === "vi" ? "/anh-ho-so-chuyen-nghiep" : "/professional-profile-photos";
   const pageUrl = absoluteUrl(lang, path);
   const serviceCoverPhoto = await getImagesFromFolder(cloudinaryFolders.serviceCoverPhoto);
 
@@ -54,8 +51,8 @@ export async function generateMetadata({
   };
 }
 
-export default async function AnhHoSoChuyenNghiep({ params }: { params: { lang: ValidLocale } }) {
-  const { lang } = await params;
+export default async function AnhHoSoChuyenNghiep() {
+  const lang = await getRequestLocale();
   const dict = await getDictionary(lang);
   const professionalProfilePhoto = await getImagesFromFolder(
     cloudinaryFolders.professionalProfilePhotos

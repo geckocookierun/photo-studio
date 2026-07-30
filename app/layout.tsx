@@ -2,8 +2,8 @@ import type React from "react";
 import type { Metadata } from "next";
 import { Be_Vietnam_Pro, Playfair_Display } from "next/font/google";
 import { getDictionary } from "./dictionaries";
-import { ValidLocale, defaultLocale, isValidLocale } from "@/lib/i18n/config";
 import { buildPageAlternates } from "@/lib/i18n/seo";
+import { getRequestLocale } from "@/lib/i18n/locale";
 import { buildLocalBusinessJsonLd } from "@/lib/seo/structured-data";
 import JsonLd from "@/components/json-ld";
 import "./globals.css";
@@ -22,14 +22,9 @@ const display = Playfair_Display({
   display: "swap",
 });
 
-export async function generateMetadata({
-  params,
-}: {
-  params: { lang: string };
-}): Promise<Metadata> {
-  const { lang } = await params;
-  const isValidLang = isValidLocale(lang) ? lang : defaultLocale;
-  const dict = await getDictionary(isValidLang as ValidLocale);
+export async function generateMetadata(): Promise<Metadata> {
+  const lang = await getRequestLocale();
+  const dict = await getDictionary(lang);
 
   return {
     title: {
@@ -43,24 +38,21 @@ export async function generateMetadata({
       shortcut: "/favicon.svg",
       apple: "/favicon.svg",
     },
-    alternates: buildPageAlternates(isValidLang as ValidLocale, "/"),
+    alternates: buildPageAlternates(lang, "/"),
   };
 }
 
 export default async function RootLayout({
   children,
-  params,
 }: Readonly<{
   children: React.ReactNode;
-  params: { lang: string };
 }>) {
-  const { lang } = await params;
-  const isValidLang = isValidLocale(lang) ? lang : defaultLocale;
+  const lang = await getRequestLocale();
 
   return (
-    <html lang={isValidLang} suppressHydrationWarning className={`${sans.variable} ${display.variable}`}>
+    <html lang={lang} suppressHydrationWarning className={`${sans.variable} ${display.variable}`}>
       <body className={`${sans.className} antialiased`}>
-        <JsonLd data={buildLocalBusinessJsonLd(isValidLang as ValidLocale)} />
+        <JsonLd data={buildLocalBusinessJsonLd(lang)} />
         {children}
       </body>
     </html>

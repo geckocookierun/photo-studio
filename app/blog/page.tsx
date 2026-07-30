@@ -1,5 +1,5 @@
 import { getBlogIndex } from "@/lib/blog/posts";
-import { ValidLocale } from "@/lib/i18n/config";
+import { getRequestLocale } from "@/lib/i18n/locale";
 import { absoluteUrl, buildPageAlternates } from "@/lib/i18n/seo";
 import { cloudinaryFolders, getImagesFromFolder } from "@/lib/utils";
 import { Metadata } from "next";
@@ -20,12 +20,8 @@ const pageCopy = {
   },
 } as const;
 
-export async function generateMetadata({
-  params,
-}: {
-  params: { lang: ValidLocale };
-}): Promise<Metadata> {
-  const { lang } = await params;
+export async function generateMetadata(): Promise<Metadata> {
+  const lang = await getRequestLocale();
   const copy = pageCopy[lang] ?? pageCopy.vi;
   const path = `/blog`;
   const pageUrl = absoluteUrl(lang, path);
@@ -55,8 +51,8 @@ export async function generateMetadata({
   };
 }
 
-export default async function BlogIndexPage({ params }: { params: { lang: ValidLocale } }) {
-  const { lang } = await params;
+export default async function BlogIndexPage() {
+  const lang = await getRequestLocale();
   const copy = pageCopy[lang] ?? pageCopy.vi;
   const posts = getBlogIndex(lang);
 

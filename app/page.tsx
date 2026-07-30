@@ -6,23 +6,18 @@ import Reveal from "@/components/reveal";
 import ServiceCard from "@/components/service-card";
 import TestimonialCard from "@/components/testimonial-card";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
-import { defaultLocale, isValidLocale, ValidLocale } from "@/lib/i18n/config";
 import { cloudinaryFolders, CloudinaryImageType, getImagesFromFolder } from "@/lib/utils";
 import { FacebookIcon, Mail, MapPin, MessageCircle, Phone } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { absoluteUrl, buildPageAlternates } from "@/lib/i18n/seo";
+import { getRequestLocale } from "@/lib/i18n/locale";
 import { getDictionary } from "./dictionaries";
 
-export async function generateMetadata({
-  params,
-}: {
-  params: { lang: ValidLocale };
-}): Promise<Metadata> {
-  const { lang } = await params;
-  const isValidLang = isValidLocale(lang) ? lang : defaultLocale;
-  const dict = await getDictionary(isValidLang as ValidLocale);
-  const pageUrl = absoluteUrl(isValidLang as ValidLocale, "/");
+export async function generateMetadata(): Promise<Metadata> {
+  const lang = await getRequestLocale();
+  const dict = await getDictionary(lang);
+  const pageUrl = absoluteUrl(lang, "/");
   const bannerHomepage = await getImagesFromFolder(cloudinaryFolders.bannerHomepage);
   return {
     title: dict.metadata.title,
@@ -43,7 +38,7 @@ export async function generateMetadata({
         },
       ],
     },
-    alternates: buildPageAlternates(isValidLang as ValidLocale, "/"),
+    alternates: buildPageAlternates(lang, "/"),
     twitter: {
       card: "summary_large_image",
       title: dict.metadata.title,
@@ -53,10 +48,9 @@ export async function generateMetadata({
   };
 }
 
-export default async function Home({ params }: { params: { lang: string } }) {
-  const { lang } = await params;
-  const isValidLang = isValidLocale(lang) ? lang : defaultLocale;
-  const dict = await getDictionary(isValidLang as ValidLocale);
+export default async function Home() {
+  const lang = await getRequestLocale();
+  const dict = await getDictionary(lang);
 
   // Get services from dictionary
   const services = dict.home.services.items;
@@ -64,8 +58,8 @@ export default async function Home({ params }: { params: { lang: string } }) {
 
   return (
     <main className="min-h-screen flex flex-col">
-      <Header lang={isValidLang} />
-      <Banner lang={isValidLang} />
+      <Header lang={lang} />
+      <Banner lang={lang} />
 
       {/* Photography Services Section */}
       <section id={dict.common.navigation.services.link} className="py-16 bg-gray-50">
@@ -381,7 +375,7 @@ export default async function Home({ params }: { params: { lang: string } }) {
         </div>
       </section>
 
-      <Footer lang={isValidLang} />
+      <Footer lang={lang} />
     </main>
   );
 }

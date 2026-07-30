@@ -1,6 +1,6 @@
 import BlogArticle from "@/components/blog-article";
 import { blogSlugs, getBlogPost } from "@/lib/blog/posts";
-import { ValidLocale } from "@/lib/i18n/config";
+import { getRequestLocale } from "@/lib/i18n/locale";
 import { absoluteUrl, buildPageAlternates } from "@/lib/i18n/seo";
 import { cloudinaryFolders, getImagesFromFolder } from "@/lib/utils";
 import { Metadata } from "next";
@@ -13,9 +13,10 @@ export function generateStaticParams() {
 export async function generateMetadata({
   params,
 }: {
-  params: { lang: ValidLocale; slug: string };
+  params: { slug: string };
 }): Promise<Metadata> {
-  const { lang, slug } = await params;
+  const { slug } = await params;
+  const lang = await getRequestLocale();
   const post = getBlogPost(slug);
   if (!post) return {};
 
@@ -51,9 +52,10 @@ export async function generateMetadata({
 export default async function BlogPostPage({
   params,
 }: {
-  params: { lang: ValidLocale; slug: string };
+  params: { slug: string };
 }) {
-  const { lang, slug } = await params;
+  const { slug } = await params;
+  const lang = await getRequestLocale();
   const post = getBlogPost(slug);
   if (!post) notFound();
 

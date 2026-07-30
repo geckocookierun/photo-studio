@@ -1,4 +1,4 @@
-import { getDictionary } from "@/app/[lang]/dictionaries";
+import { getDictionary } from "@/app/dictionaries";
 import { ValidLocale } from "@/lib/i18n/config";
 import { cloudinaryFolders, CloudinaryImageType, getImagesFromFolder } from "@/lib/utils";
 import Link from "next/link";

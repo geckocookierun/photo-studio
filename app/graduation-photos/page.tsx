@@ -1,9 +1,10 @@
-import { getDictionary } from "@/app/[lang]/dictionaries";
+import { getDictionary } from "@/app/dictionaries";
 import { CloudinaryImage } from "@/components/CloudinaryImage";
 import Footer from "@/components/footer";
 import Header from "@/components/header";
 import { Card, CardContent } from "@/components/ui/card";
 import { ValidLocale } from "@/lib/i18n/config";
+import { getRequestLocale } from "@/lib/i18n/locale";
 import { absoluteUrl, buildPageAlternates } from "@/lib/i18n/seo";
 import {
   cloudinaryFolders,
@@ -13,14 +14,10 @@ import {
 import { Camera, CameraIcon } from "lucide-react";
 import { Metadata } from "next";
 
-export async function generateMetadata({
-  params,
-}: {
-  params: { lang: ValidLocale };
-}): Promise<Metadata> {
-  const { lang } = await params;
+export async function generateMetadata(): Promise<Metadata> {
+  const lang = await getRequestLocale();
   const dict = await getDictionary(lang);
-  const path = "/chup-anh-tot-nghiep";
+  const path = lang === "vi" ? "/chup-anh-tot-nghiep" : "/graduation-photos";
   const pageUrl = absoluteUrl(lang, path);
   const serviceCoverPhoto = await getImagesFromFolder(cloudinaryFolders.serviceCoverPhoto);
 
@@ -53,8 +50,8 @@ export async function generateMetadata({
   };
 }
 
-export default async function GraduationPhotos({ params }: { params: { lang: ValidLocale } }) {
-  const { lang } = await params;
+export default async function GraduationPhotos() {
+  const lang = await getRequestLocale();
   const dict = await getDictionary(lang);
   const professionalProfilePhoto = await getImagesFromFolder(cloudinaryFolders.graduationPhotos);
   const serviceCoverPhoto = await getImagesFromFolder(cloudinaryFolders.serviceCoverPhoto);

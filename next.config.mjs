@@ -23,28 +23,47 @@ const nextConfig = {
     ],
   },
 
+  async redirects() {
+    return [
+      // Legacy /vi /en prefixes → clean public paths (locale comes from domain)
+      { source: "/vi", destination: "/", permanent: true },
+      { source: "/vi/:path*", destination: "/:path*", permanent: true },
+      { source: "/en", destination: "/", permanent: true },
+      { source: "/en/:path*", destination: "/:path*", permanent: true },
+    ];
+  },
+
   async rewrites() {
-    // Internal paths still use /vi and /en after middleware rewrite
+    // Public VI slugs → internal English folder names
     return [
       {
-        source: "/vi/anh-the-ho-chieu/:path*",
-        destination: "/vi/id-photos/:path*",
+        source: "/anh-the-ho-chieu",
+        destination: "/id-photos",
       },
       {
-        source: "/en/id-passport-photos/:path*",
-        destination: "/en/id-photos/:path*",
+        source: "/anh-the-ho-chieu/:path*",
+        destination: "/id-photos/:path*",
       },
       {
-        source: "/vi/anh-ho-so-chuyen-nghiep",
-        destination: "/vi/professional-profile-photos",
+        source: "/anh-ho-so-chuyen-nghiep",
+        destination: "/professional-profile-photos",
       },
       {
-        source: "/vi/chup-anh-tot-nghiep",
-        destination: "/vi/graduation-photos",
+        source: "/chup-anh-tot-nghiep",
+        destination: "/graduation-photos",
       },
       {
-        source: "/vi/phuc-hoi-anh-cu",
-        destination: "/vi/photo-restoration",
+        source: "/phuc-hoi-anh-cu",
+        destination: "/photo-restoration",
+      },
+      // EN public aliases (same folders)
+      {
+        source: "/id-passport-photos",
+        destination: "/id-photos",
+      },
+      {
+        source: "/id-passport-photos/:path*",
+        destination: "/id-photos/:path*",
       },
     ];
   },

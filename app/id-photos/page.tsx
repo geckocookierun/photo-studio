@@ -1,10 +1,11 @@
-import { getDictionary } from "@/app/[lang]/dictionaries";
+import { getDictionary } from "@/app/dictionaries";
 import { CloudinaryImage } from "@/components/CloudinaryImage";
 import Footer from "@/components/footer";
 import Header from "@/components/header";
 import JsonLd from "@/components/json-ld";
 import Reveal from "@/components/reveal";
-import { defaultLocale, isValidLocale, ValidLocale } from "@/lib/i18n/config";
+import { ValidLocale } from "@/lib/i18n/config";
+import { getRequestLocale } from "@/lib/i18n/locale";
 import { absoluteUrl, buildPageAlternates } from "@/lib/i18n/seo";
 import { PHOTO_TYPES } from "@/lib/photo-types";
 import { idPhotoFaqs } from "@/lib/seo/id-photo-copy";
@@ -18,16 +19,11 @@ function hubPath(lang: ValidLocale) {
   return lang === "vi" ? "/anh-the-ho-chieu" : "/id-passport-photos";
 }
 
-export async function generateMetadata({
-  params,
-}: {
-  params: { lang: ValidLocale };
-}): Promise<Metadata> {
-  const { lang } = await params;
-  const isValidLang = isValidLocale(lang) ? lang : defaultLocale;
-  const dict = await getDictionary(isValidLang);
-  const path = hubPath(isValidLang);
-  const pageUrl = absoluteUrl(isValidLang, path);
+export async function generateMetadata(): Promise<Metadata> {
+  const lang = await getRequestLocale();
+  const dict = await getDictionary(lang);
+  const path = hubPath(lang);
+  const pageUrl = absoluteUrl(lang, path);
   const serviceCoverPhoto = await getImagesFromFolder(cloudinaryFolders.serviceCoverPhoto);
   const cover = serviceCoverPhoto.find((f) => f.title === "card")?.url;
 
@@ -45,7 +41,7 @@ export async function generateMetadata({
         ? [{ url: cover, width: 1200, height: 630, alt: dict.id_photos.title }]
         : undefined,
     },
-    alternates: buildPageAlternates(isValidLang, path),
+    alternates: buildPageAlternates(lang, path),
     twitter: {
       card: "summary_large_image",
       title: dict.id_photos.title,
@@ -55,21 +51,16 @@ export async function generateMetadata({
   };
 }
 
-export default async function IdPhotosHub({
-  params,
-}: {
-  params: { lang: ValidLocale };
-}) {
-  const { lang } = await params;
-  const isValidLang = isValidLocale(lang) ? lang : defaultLocale;
-  const dict = await getDictionary(isValidLang);
-  const base = hubPath(isValidLang);
-  const faqs = idPhotoFaqs[isValidLang];
+export default async function IdPhotosHub() {
+  const lang = await getRequestLocale();
+  const dict = await getDictionary(lang);
+  const base = hubPath(lang);
+  const faqs = idPhotoFaqs[lang];
   const serviceCoverPhoto = await getImagesFromFolder(cloudinaryFolders.serviceCoverPhoto);
   const heroUrl = serviceCoverPhoto.find((f) => f.title === "card")?.url;
 
   const copy =
-    isValidLang === "vi"
+    lang === "vi"
       ? {
           choose: "Chọn kích thước ảnh thẻ",
           hint: "Bấm vào size bạn cần — xem mẫu và đặt chụp lấy ngay tại studio.",
@@ -102,13 +93,13 @@ export default async function IdPhotosHub({
       <JsonLd
         data={[
           buildFaqJsonLd([...faqs]),
-          buildBreadcrumbJsonLd(isValidLang, [
+          buildBreadcrumbJsonLd(lang, [
             { name: copy.home, path: "/" },
             { name: dict.id_photos.heading, path: base },
           ]),
         ]}
       />
-      <Header lang={isValidLang} />
+      <Header lang={lang} />
 
       <section className="relative h-[280px] md:h-[360px] bg-slate-800">
         <div className="absolute inset-0 bg-gradient-to-r from-slate-900/90 to-slate-900/60 z-10" />
@@ -199,7 +190,7 @@ export default async function IdPhotosHub({
         </div>
       </section>
 
-      <Footer lang={isValidLang} />
+      <Footer lang={lang} />
     </div>
   );
 }

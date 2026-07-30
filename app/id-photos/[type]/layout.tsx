@@ -1,4 +1,4 @@
-import { ValidLocale } from "@/lib/i18n/config";
+import { getRequestLocale } from "@/lib/i18n/locale";
 import Footer from "@/components/footer";
 import Header from "@/components/header";
 import { CloudinaryImage } from "@/components/CloudinaryImage";
@@ -6,7 +6,7 @@ import { PhotoMenu } from "@/components/photo-menu";
 import { getPhotoSizeMeta } from "@/lib/seo/id-photo-copy";
 import { PHOTO_TYPES } from "@/lib/photo-types";
 import { cloudinaryFolders, getImagesFromFolder } from "@/lib/utils";
-import { getDictionary } from "../../dictionaries";
+import { getDictionary } from "@/app/dictionaries";
 import { Camera, ImageIcon } from "lucide-react";
 import Link from "next/link";
 
@@ -15,9 +15,10 @@ export default async function PhotoLayout({
   params,
 }: {
   children: React.ReactNode;
-  params: Promise<{ lang: ValidLocale; type: string }>;
+  params: Promise<{ type: string }>;
 }) {
-  const { lang, type } = await params;
+  const { type } = await params;
+  const lang = await getRequestLocale();
   const dict = await getDictionary(lang);
   const sizeMeta = getPhotoSizeMeta(lang, type);
   const serviceCoverPhoto = await getImagesFromFolder(cloudinaryFolders.serviceCoverPhoto);
