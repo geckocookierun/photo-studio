@@ -1,7 +1,6 @@
 import { getDictionary } from "@/app/[lang]/dictionaries";
 import { ValidLocale } from "@/lib/i18n/config";
 import { cloudinaryFolders, CloudinaryImageType, getImagesFromFolder } from "@/lib/utils";
-import { headers } from "next/headers";
 import Link from "next/link";
 import { CloudinaryImage } from "./CloudinaryImage";
 import DeferredChatButtons from "./deferred-chat-buttons";
@@ -10,8 +9,6 @@ import MobileNavClient from "./mobile-nav-client";
 
 export default async function Header({ lang }: { lang: string }) {
   const dict = await getDictionary(lang as ValidLocale);
-  const headersList = await headers();
-  const pathname = headersList.get("x-pathname") || "/";
 
   const navItems = [
     {
@@ -65,7 +62,7 @@ export default async function Header({ lang }: { lang: string }) {
             </div>
 
             <div className="flex items-center space-x-3">
-              <LanguageSwitcher lang={lang as ValidLocale} pathname={pathname} />
+              <LanguageSwitcher lang={lang as ValidLocale} />
               <Link
                 href="https://www.facebook.com/messages/t/116514626424223"
                 target="_blank"
