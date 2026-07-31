@@ -6,6 +6,10 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
+  // Fewer parallel prerenders → fewer Cloudinary Admin API bursts (420 rate limits)
+  experimental: {
+    cpus: 1,
+  },
   images: {
     remotePatterns: [
       {

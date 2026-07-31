@@ -1,11 +1,11 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "main": ".open-next/worker.js",
-  "name": "photo-studio",
+  "name": "photo-studio-en",
   "compatibility_date": "2024-12-30",
   "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
   "vars": {
-    "NEXT_PUBLIC_SITE_LANG": "vi",
+    "NEXT_PUBLIC_SITE_LANG": "en",
     "NEXT_PUBLIC_VI_DOMAIN": "chupanhthedanang.vn",
     "NEXT_PUBLIC_EN_DOMAIN": "photoboothdanang.vn"
   },
@@ -16,11 +16,11 @@
   "services": [
     {
       "binding": "WORKER_SELF_REFERENCE",
-      "service": "photo-studio"
+      "service": "photo-studio-en"
     }
   ],
   "routes": [
-    { "pattern": "chupanhthedanang.vn", "custom_domain": true },
-    { "pattern": "www.chupanhthedanang.vn", "custom_domain": true }
+    { "pattern": "photoboothdanang.vn", "custom_domain": true },
+    { "pattern": "www.photoboothdanang.vn", "custom_domain": true }
   ]
 }

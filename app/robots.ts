@@ -1,19 +1,10 @@
 import { MetadataRoute } from "next";
-import { headers } from "next/headers";
+import { defaultLocale } from "@/lib/i18n/config";
 
 export default async function robots(): Promise<MetadataRoute.Robots> {
-  const headersList = await headers();
-  const host = headersList.get("host") || "localhost:3000";
+  const lang = process.env.NEXT_PUBLIC_SITE_LANG || defaultLocale;
 
-  if (host.includes("chupanhthedanang")) {
-    return {
-      rules: [{ userAgent: "*", allow: "/" }],
-      sitemap: "https://chupanhthedanang.vn/sitemap.xml",
-      host: "https://chupanhthedanang.vn",
-    };
-  }
-
-  if (host.includes("photoboothdanang")) {
+  if (lang === "en") {
     return {
       rules: [{ userAgent: "*", allow: "/" }],
       sitemap: "https://photoboothdanang.vn/sitemap.xml",
@@ -21,8 +12,9 @@ export default async function robots(): Promise<MetadataRoute.Robots> {
     };
   }
 
-  // Local / preview — block indexing
   return {
-    rules: [{ userAgent: "*", disallow: "/" }],
+    rules: [{ userAgent: "*", allow: "/" }],
+    sitemap: "https://chupanhthedanang.vn/sitemap.xml",
+    host: "https://chupanhthedanang.vn",
   };
 }

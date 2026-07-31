@@ -32,21 +32,25 @@ export async function generateMetadata(): Promise<Metadata> {
       siteName: "Nhật Studio",
       locale: lang === "vi" ? "vi_VN" : "en_US",
       type: "website",
-      images: [
-        {
-          url: serviceCoverPhoto.find((f: CloudinaryImageType) => f.title === "profile").url,
-          width: 1200,
-          height: 630,
-          alt: dict.professional_profile.intro.title,
-        },
-      ],
+      images: serviceCoverPhoto.find((f: CloudinaryImageType) => f.title === "profile")?.url
+        ? [
+            {
+              url: serviceCoverPhoto.find((f: CloudinaryImageType) => f.title === "profile")!.url,
+              width: 1200,
+              height: 630,
+              alt: dict.professional_profile.intro.title,
+            },
+          ]
+        : undefined,
     },
     alternates: buildPageAlternates(lang, path),
     twitter: {
       card: "summary_large_image",
       title: dict.professional_profile.intro.title,
       description: dict.professional_profile.intro.description,
-      images: [serviceCoverPhoto.find((f: CloudinaryImageType) => f.title === "profile").url],
+      images: serviceCoverPhoto.find((f: CloudinaryImageType) => f.title === "profile")?.url
+        ? [serviceCoverPhoto.find((f: CloudinaryImageType) => f.title === "profile")!.url]
+        : undefined,
     },
   };
 }

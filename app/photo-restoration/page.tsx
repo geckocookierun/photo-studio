@@ -30,21 +30,25 @@ export async function generateMetadata(): Promise<Metadata> {
       siteName: "Nhật Studio",
       locale: lang === "vi" ? "vi_VN" : "en_US",
       type: "website",
-      images: [
-        {
-          url: serviceCoverPhoto.find((f: CloudinaryImageType) => f.title === "recovery").url,
-          width: 1200,
-          height: 630,
-          alt: dict.photo_restoration.title,
-        },
-      ],
+      images: serviceCoverPhoto.find((f: CloudinaryImageType) => f.title === "recovery")?.url
+        ? [
+            {
+              url: serviceCoverPhoto.find((f: CloudinaryImageType) => f.title === "recovery")!.url,
+              width: 1200,
+              height: 630,
+              alt: dict.photo_restoration.title,
+            },
+          ]
+        : undefined,
     },
     alternates: buildPageAlternates(lang, path),
     twitter: {
       card: "summary_large_image",
       title: dict.photo_restoration.title,
       description: dict.photo_restoration.description,
-      images: [serviceCoverPhoto.find((f: CloudinaryImageType) => f.title === "recovery").url],
+      images: serviceCoverPhoto.find((f: CloudinaryImageType) => f.title === "recovery")?.url
+        ? [serviceCoverPhoto.find((f: CloudinaryImageType) => f.title === "recovery")!.url]
+        : undefined,
     },
   };
 }

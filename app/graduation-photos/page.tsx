@@ -31,21 +31,25 @@ export async function generateMetadata(): Promise<Metadata> {
       siteName: "Nhật Studio",
       locale: lang === "vi" ? "vi_VN" : "en_US",
       type: "website",
-      images: [
-        {
-          url: serviceCoverPhoto.find((f: CloudinaryImageType) => f.title === "graduation").url,
-          width: 1200,
-          height: 630,
-          alt: dict.graduation_photos.intro.title,
-        },
-      ],
+      images: serviceCoverPhoto.find((f: CloudinaryImageType) => f.title === "graduation")?.url
+        ? [
+            {
+              url: serviceCoverPhoto.find((f: CloudinaryImageType) => f.title === "graduation")!.url,
+              width: 1200,
+              height: 630,
+              alt: dict.graduation_photos.intro.title,
+            },
+          ]
+        : undefined,
     },
     alternates: buildPageAlternates(lang, path),
     twitter: {
       card: "summary_large_image",
       title: dict.graduation_photos.intro.title,
       description: dict.graduation_photos.intro.description,
-      images: [serviceCoverPhoto.find((f: CloudinaryImageType) => f.title === "graduation").url],
+      images: serviceCoverPhoto.find((f: CloudinaryImageType) => f.title === "graduation")?.url
+        ? [serviceCoverPhoto.find((f: CloudinaryImageType) => f.title === "graduation")!.url]
+        : undefined,
     },
   };
 }

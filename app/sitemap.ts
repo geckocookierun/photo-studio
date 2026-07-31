@@ -1,7 +1,7 @@
 import { MetadataRoute } from "next";
-import { headers } from "next/headers";
 import { blogSlugs } from "@/lib/blog/posts";
 import { PHOTO_TYPES } from "@/lib/photo-types";
+import { defaultLocale } from "@/lib/i18n/config";
 
 const servicePathsVi = [
   "anh-the-ho-chieu",
@@ -30,32 +30,34 @@ function entry(
   };
 }
 
+function viSitemap(origin: string): MetadataRoute.Sitemap {
+  return [
+    entry(`${origin}/`, 1.0, "daily"),
+    ...servicePathsVi.map((slug) => entry(`${origin}/${slug}`, 0.8)),
+    ...PHOTO_TYPES.map((type) => entry(`${origin}/anh-the-ho-chieu/${type}`, 0.7)),
+    entry(`${origin}/blog`, 0.7),
+    ...blogSlugs.map((slug) => entry(`${origin}/blog/${slug}`, 0.6)),
+  ];
+}
+
+function enSitemap(origin: string): MetadataRoute.Sitemap {
+  return [
+    entry(`${origin}/`, 1.0, "daily"),
+    ...servicePathsEn.map((slug) => entry(`${origin}/${slug}`, 0.8)),
+    ...PHOTO_TYPES.map((type) => entry(`${origin}/id-passport-photos/${type}`, 0.7)),
+    entry(`${origin}/blog`, 0.7),
+    ...blogSlugs.map((slug) => entry(`${origin}/blog/${slug}`, 0.6)),
+  ];
+}
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const headersList = await headers();
-  const host = headersList.get("host") || "localhost:3000";
-  const isLocal = host.includes("localhost");
-  const protocol = isLocal ? "http" : headersList.get("x-forwarded-proto") || "https";
-  const origin = `${protocol}://${host}`;
+  const lang = process.env.NEXT_PUBLIC_SITE_LANG || defaultLocale;
 
-  if (host.includes("chupanhthedanang") || isLocal) {
-    return [
-      entry(`${origin}/`, 1.0, "daily"),
-      ...servicePathsVi.map((slug) => entry(`${origin}/${slug}`, 0.8)),
-      ...PHOTO_TYPES.map((type) => entry(`${origin}/anh-the-ho-chieu/${type}`, 0.7)),
-      entry(`${origin}/blog`, 0.7),
-      ...blogSlugs.map((slug) => entry(`${origin}/blog/${slug}`, 0.6)),
-    ];
+  if (lang === "en") {
+    const origin = `https://${process.env.NEXT_PUBLIC_EN_DOMAIN || "photoboothdanang.vn"}`;
+    return enSitemap(origin);
   }
 
-  if (host.includes("photoboothdanang")) {
-    return [
-      entry(`${origin}/`, 1.0, "daily"),
-      ...servicePathsEn.map((slug) => entry(`${origin}/${slug}`, 0.8)),
-      ...PHOTO_TYPES.map((type) => entry(`${origin}/id-passport-photos/${type}`, 0.7)),
-      entry(`${origin}/blog`, 0.7),
-      ...blogSlugs.map((slug) => entry(`${origin}/blog/${slug}`, 0.6)),
-    ];
-  }
-
-  return [];
+  const origin = `https://${process.env.NEXT_PUBLIC_VI_DOMAIN || "chupanhthedanang.vn"}`;
+  return viSitemap(origin);
 }
