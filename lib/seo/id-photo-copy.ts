@@ -5,73 +5,73 @@ type SizeCopy = { title: string; description: string };
 
 const sizeMetaVi: Record<PhotoTypeId, SizeCopy> = {
   "3x4": {
-    title: "Chụp ảnh thẻ 3x4 Đà Nẵng | Lấy ngay - Nhật Studio",
+    title: "Chụp ảnh thẻ 3x4 Đà Nẵng lấy ngay",
     description:
       "Chụp ảnh thẻ 3x4 chuẩn hồ sơ, lý lịch tại Đà Nẵng. Chỉnh sửa nhẹ, in lấy ngay tại Nhật Studio Hoàng Diệu.",
   },
   "3.3x4.8": {
-    title: "Ảnh thẻ 3.3x4.8 Đà Nẵng | Nhật Studio",
+    title: "Ảnh thẻ 3.3x4.8 Đà Nẵng",
     description: "Chụp và in ảnh thẻ 3.3x4.8 đúng kích thước tại Nhật Studio Đà Nẵng, nhận trong ngày.",
   },
   "3.5x4.5": {
-    title: "Ảnh thẻ 3.5x4.5 / visa Đà Nẵng | Nhật Studio",
+    title: "Ảnh thẻ 3.5x4.5 / visa Đà Nẵng",
     description:
       "Ảnh 3.5x4.5 thường dùng cho visa. Chụp đúng chuẩn tại Nhật Studio Đà Nẵng, hỗ trợ file mềm.",
   },
   "3.5x5": {
-    title: "Ảnh thẻ 3.5x5 Đà Nẵng | Nhật Studio",
+    title: "Ảnh thẻ 3.5x5 Đà Nẵng",
     description: "Chụp ảnh thẻ 3.5x5 tại Đà Nẵng — nền trắng/xanh theo yêu cầu, lấy ngay.",
   },
   "3.6x4.7": {
-    title: "Ảnh thẻ 3.6x4.7 Đà Nẵng | Nhật Studio",
+    title: "Ảnh thẻ 3.6x4.7 Đà Nẵng",
     description: "Dịch vụ chụp ảnh 3.6x4.7 đúng size tại Nhật Studio, Hải Châu, Đà Nẵng.",
   },
   "4x6": {
-    title: "Chụp ảnh 4x6 Đà Nẵng | Nhật Studio",
+    title: "Chụp ảnh 4x6 Đà Nẵng",
     description: "Ảnh 4x6 cho hồ sơ và giấy tờ tại Đà Nẵng. In rõ nét, nhận nhanh tại Nhật Studio.",
   },
   "5x5": {
-    title: "Ảnh thẻ 5x5 Đà Nẵng | Nhật Studio",
+    title: "Ảnh thẻ 5x5 Đà Nẵng",
     description: "Chụp ảnh thẻ vuông 5x5 tại Đà Nẵng, chỉnh sáng tự nhiên, lấy ngay.",
   },
   "5x7": {
-    title: "Ảnh 5x7 Đà Nẵng | Nhật Studio",
+    title: "Ảnh 5x7 Đà Nẵng",
     description: "In ảnh 5x7 tại Nhật Studio Đà Nẵng — phù hợp lưu giữ hoặc yêu cầu giấy tờ đặc thù.",
   },
 };
 
 const sizeMetaEn: Record<PhotoTypeId, SizeCopy> = {
   "3x4": {
-    title: "3x4 ID Photos in Da Nang | Same-day - Nhat Studio",
+    title: "3x4 ID Photos in Da Nang same-day",
     description:
       "Standard 3x4 ID photos in Da Nang. Light retouching and same-day prints at Nhat Studio, Hoang Dieu.",
   },
   "3.3x4.8": {
-    title: "3.3x4.8 ID Photos in Da Nang | Nhat Studio",
+    title: "3.3x4.8 ID Photos in Da Nang",
     description: "Exact-size 3.3x4.8 ID photos with same-day pickup at Nhat Studio, Da Nang.",
   },
   "3.5x4.5": {
-    title: "3.5x4.5 Visa Photos in Da Nang | Nhat Studio",
+    title: "3.5x4.5 Visa Photos in Da Nang",
     description: "3.5x4.5 photos commonly used for visas. Compliant shoots and soft-file delivery in Da Nang.",
   },
   "3.5x5": {
-    title: "3.5x5 ID Photos in Da Nang | Nhat Studio",
+    title: "3.5x5 ID Photos in Da Nang",
     description: "3.5x5 ID photos in Da Nang — white or blue background, same-day service.",
   },
   "3.6x4.7": {
-    title: "3.6x4.7 ID Photos in Da Nang | Nhat Studio",
+    title: "3.6x4.7 ID Photos in Da Nang",
     description: "Precise 3.6x4.7 ID photo service at Nhat Studio in Hai Chau, Da Nang.",
   },
   "4x6": {
-    title: "4x6 Photos in Da Nang | Nhat Studio",
+    title: "4x6 Photos in Da Nang",
     description: "4x6 prints for forms and paperwork in Da Nang. Sharp prints, fast turnaround.",
   },
   "5x5": {
-    title: "5x5 ID Photos in Da Nang | Nhat Studio",
+    title: "5x5 ID Photos in Da Nang",
     description: "Square 5x5 ID photos in Da Nang with natural lighting and same-day pickup.",
   },
   "5x7": {
-    title: "5x7 Photos in Da Nang | Nhat Studio",
+    title: "5x7 Photos in Da Nang",
     description: "5x7 prints at Nhat Studio, Da Nang — for keepsakes or specific document needs.",
   },
 };
@@ -82,8 +82,8 @@ export function getPhotoSizeMeta(lang: ValidLocale, type: string): SizeCopy {
     table[type as PhotoTypeId] ?? {
       title:
         lang === "vi"
-          ? `Chụp ảnh thẻ ${type} Đà Nẵng | Nhật Studio`
-          : `${type} ID Photos in Da Nang | Nhat Studio`,
+          ? `Chụp ảnh thẻ ${type} Đà Nẵng`
+          : `${type} ID Photos in Da Nang`,
       description:
         lang === "vi"
           ? `Chụp ảnh thẻ ${type} đúng chuẩn tại Nhật Studio Đà Nẵng.`

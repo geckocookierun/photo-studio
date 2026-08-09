@@ -12,6 +12,7 @@ import {
   getImagesFromFolder,
 } from "@/lib/utils";
 import { Metadata } from "next";
+import Link from "next/link";
 
 export async function generateMetadata(): Promise<Metadata> {
   const lang = await getRequestLocale();
@@ -169,6 +170,35 @@ export default async function PhotoRestoration() {
           </section>
         </div>
       </section>
+
+      <section className="container mx-auto px-4 pb-12">
+        <h2 className="text-xl font-semibold mb-4 text-center">
+          {lang === "vi" ? "Xem thêm" : "Related"}
+        </h2>
+        <div className="flex flex-wrap justify-center gap-3 text-sm">
+          {(lang === "vi"
+            ? [
+                { href: "/anh-the-ho-chieu", label: "Chụp ảnh thẻ" },
+                { href: "/blog/nhat-studio-hoang-dieu-da-nang", label: "Địa chỉ Hoàng Diệu" },
+                { href: "/blog", label: "Blog" },
+              ]
+            : [
+                { href: "/id-passport-photos", label: "ID photos" },
+                { href: "/blog/nhat-studio-hoang-dieu-da-nang", label: "Find us on Hoang Dieu" },
+                { href: "/blog", label: "Blog" },
+              ]
+          ).map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className="rounded-full border border-gray-200 px-3 py-1.5 text-gray-700 hover:border-amber-400 hover:text-amber-700"
+            >
+              {item.label}
+            </Link>
+          ))}
+        </div>
+      </section>
+
       <Footer lang={lang} />
     </main>
   );

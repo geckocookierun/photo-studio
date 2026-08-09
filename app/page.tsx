@@ -20,7 +20,8 @@ export async function generateMetadata(): Promise<Metadata> {
   const pageUrl = absoluteUrl(lang, "/");
   const bannerHomepage = await getImagesFromFolder(cloudinaryFolders.bannerHomepage);
   return {
-    title: dict.metadata.title,
+    // Homepage title already includes brand; skip layout "%s | Nhật Studio" template.
+    title: { absolute: dict.metadata.title },
     description: dict.metadata.description,
     openGraph: {
       title: dict.metadata.title,

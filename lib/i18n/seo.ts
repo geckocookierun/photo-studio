@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { getBlogPost } from "@/lib/blog/posts";
 import type { ValidLocale } from "./config";
 import { localizedSlugs } from "./paths";
 
@@ -11,7 +12,12 @@ export function getDomainByLocale(locale: ValidLocale): string {
     locale === "vi"
       ? process.env.NEXT_PUBLIC_VI_DOMAIN || DEFAULT_VI_DOMAIN
       : process.env.NEXT_PUBLIC_EN_DOMAIN || DEFAULT_EN_DOMAIN;
-  return raw.replace(/\/$/, "");
+  let origin = raw.trim().replace(/\/$/, "");
+  // Env may be host-only or already include https://
+  if (!/^https?:\/\//i.test(origin)) {
+    origin = `https://${origin}`;
+  }
+  return origin;
 }
 
 /** Normalize full URL or path to a pathname starting with /. */
@@ -42,7 +48,13 @@ export function localizePathname(pathname: string, targetLocale: ValidLocale): s
   const path = stripLocalePrefix(pathname);
   const segments = path.split("/").filter(Boolean);
 
-  const mapped = segments.map((segment) => {
+  const mapped = segments.map((segment, index) => {
+    // /blog/{slug} — map VI ↔ EN article slugs for hreflang / language switcher
+    if (index > 0 && segments[index - 1] === "blog") {
+      const post = getBlogPost(segment);
+      if (post) return post.slugs[targetLocale];
+    }
+
     const match = localizedSlugs.find((item) =>
       (item.url as readonly string[]).includes(segment)
     );

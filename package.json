@@ -8,8 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
-    "deploy:cf:vi": "opennextjs-cloudflare build && wrangler deploy",
-    "deploy:cf:en": "opennextjs-cloudflare build && wrangler deploy -c wrangler.en.jsonc",
+    "deploy:cf:vi": "npx cross-env NEXT_PUBLIC_SITE_LANG=vi opennextjs-cloudflare build && wrangler deploy",
+    "deploy:cf:en": "npx cross-env NEXT_PUBLIC_SITE_LANG=en opennextjs-cloudflare build && wrangler deploy -c wrangler.en.jsonc",
     "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts"
   },
   "dependencies": {

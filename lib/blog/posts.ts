@@ -7,27 +7,34 @@ export type BlogSection = {
   ordered?: boolean;
 };
 
+export type BlogLink = {
+  href: string;
+  label: string;
+};
+
 export type BlogLocaleContent = {
   title: string;
   description: string;
   intro?: string;
   sections: BlogSection[];
   closing?: string;
+  /** Internal links shown under the article */
+  related?: BlogLink[];
 };
 
 export type BlogPost = {
-  slug: string;
+  slugs: { vi: string; en: string };
   content: Record<ValidLocale, BlogLocaleContent>;
 };
 
 export const blogPosts: BlogPost[] = [
   {
-    slug: "chup-anh-the-gia-re",
+    slugs: { vi: "chup-anh-the-gia-re", en: "affordable-id-photos-da-nang" },
     content: {
       vi: {
         title: "Chụp ảnh thẻ giá rẻ tại Đà Nẵng — lấy ngay trong ngày",
         description:
-          "Gợi ý chọn chỗ chụp ảnh thẻ vừa túi tiền ở Đà Nẵng mà vẫn đúng kích thước, nền và chất lượng in.",
+          "Gợi ý chọn studio chụp ảnh thẻ giá hợp lý ở Đà Nẵng mà vẫn đúng kích thước, nền và bản in rõ — lấy ngay tại Nhật Studio Hoàng Diệu.",
         intro:
           "Nhiều người cần ảnh thẻ gấp cho hồ sơ, thẻ sinh viên hay nộp online. Giá rẻ vẫn ổn nếu studio làm đúng kích thước và in rõ — đừng đổi chất lượng lấy vài nghìn đồng.",
         sections: [
@@ -61,7 +68,7 @@ export const blogPosts: BlogPost[] = [
       en: {
         title: "Affordable ID photos in Da Nang — same-day pickup",
         description:
-          "How to get budget-friendly ID photos in Da Nang without wrong sizes, muddy prints, or over-edited faces.",
+          "How to get affordable ID photos in Da Nang with correct size, clean background, and sharp prints — same-day at Nhat Studio, Hoang Dieu.",
         intro:
           "Plenty of people need ID photos for paperwork, student cards, or online forms. Cheap is fine — as long as the size, background, and print quality are correct.",
         sections: [
@@ -95,12 +102,12 @@ export const blogPosts: BlogPost[] = [
     },
   },
   {
-    slug: "chup-anh-the-lay-ngay",
+    slugs: { vi: "chup-anh-the-lay-ngay", en: "same-day-id-photos-da-nang" },
     content: {
       vi: {
         title: `Ảnh thẻ lấy ngay Đà Nẵng ${new Date().getFullYear()}`,
         description:
-          "Quy trình chụp ảnh thẻ lấy ngay: nên mặc gì, mất bao lâu, và khi nào nên đặt trước.",
+          "Hướng dẫn chụp ảnh thẻ lấy ngay tại Đà Nẵng: nên mặc gì, mất bao lâu, khi nào nên đặt trước và mẹo để khỏi chụp lại.",
         intro:
           "Ảnh thẻ lấy ngay hợp với người bận hoặc đang nộp hồ sơ cận hạn. Dưới đây là những gì bạn nên biết trước khi tới studio.",
         sections: [
@@ -133,7 +140,7 @@ export const blogPosts: BlogPost[] = [
       en: {
         title: `Same-day ID photos in Da Nang ${new Date().getFullYear()}`,
         description:
-          "What to expect from a same-day ID photo visit: timing, clothing, and when to book ahead.",
+          "Same-day ID photos in Da Nang: how long it takes, what to wear, when to book ahead, and tips to avoid a reshoot at the studio.",
         intro:
           "Same-day ID photos suit busy schedules and last-minute paperwork. Here’s what helps before you walk in.",
         sections: [
@@ -166,12 +173,12 @@ export const blogPosts: BlogPost[] = [
     },
   },
   {
-    slug: "chup-anh-the-visa-ho-chieu",
+    slugs: { vi: "chup-anh-the-visa-ho-chieu", en: "visa-passport-photos-tips" },
     content: {
       vi: {
         title: "Ảnh thẻ visa & hộ chiếu tại Đà Nẵng cần chú ý gì?",
         description:
-          "Khác biệt giữa ảnh 3x4 thường, ảnh visa và ảnh hộ chiếu — và cách tránh bị trả hồ sơ vì sai ảnh.",
+          "Phân biệt ảnh 3x4, ảnh visa và ảnh hộ chiếu tại Đà Nẵng — kích thước, nền và lỗi hay khiến hồ sơ bị trả lại. Tư vấn tại Nhật Studio.",
         intro:
           "Ảnh visa/hộ chiếu dễ bị sai hơn ảnh thẻ nội địa vì mỗi nước có quy định riêng. Đừng mặc định mang ảnh 3x4 cũ đi nộp.",
         sections: [
@@ -202,7 +209,7 @@ export const blogPosts: BlogPost[] = [
       en: {
         title: "Visa & passport photos in Da Nang: what to check",
         description:
-          "How visa and passport photos differ from regular ID prints — and how to avoid application delays.",
+          "Visa and passport photos vs regular ID prints in Da Nang: size, background, and common mistakes that delay applications. Tips from Nhat Studio.",
         intro:
           "Visa and passport photos get rejected more often than regular local ID photos because rules vary by country. Don’t assume an old 3x4 print is enough.",
         sections: [
@@ -233,12 +240,12 @@ export const blogPosts: BlogPost[] = [
     },
   },
   {
-    slug: "mac-gi-khi-chup-anh-the",
+    slugs: { vi: "mac-gi-khi-chup-anh-the", en: "what-to-wear-for-id-photos" },
     content: {
       vi: {
         title: "Mặc gì khi chụp ảnh thẻ để nhìn tự nhiên và đúng quy định",
         description:
-          "Gợi ý trang phục, tóc và phụ kiện khi chụp ảnh thẻ — tránh những thứ hay phải chụp lại.",
+          "Mặc gì khi chụp ảnh thẻ ở Đà Nẵng: gợi ý áo, tóc, kính và phụ kiện để khuôn mặt rõ, đúng quy định và ít phải chụp lại.",
         intro:
           "Ảnh thẻ không cần “diện” cầu kỳ. Mục tiêu là khuôn mặt rõ, trang phục không gây nhiễu, và đúng yêu cầu giấy tờ bạn đang nộp.",
         sections: [
@@ -272,7 +279,7 @@ export const blogPosts: BlogPost[] = [
       en: {
         title: "What to wear for an ID photo (simple rules that work)",
         description:
-          "Clothing, hair, and accessory tips for ID photos — so you don’t have to reshoot.",
+          "What to wear for ID photos in Da Nang: clothing, hair, glasses, and accessories that keep your face clear and reduce reshoots at the studio.",
         intro:
           "ID photos don’t need a fancy outfit. You want a clear face, quiet clothing, and whatever the form actually asks for.",
         sections: [
@@ -306,12 +313,12 @@ export const blogPosts: BlogPost[] = [
     },
   },
   {
-    slug: "kich-thuoc-anh-the-pho-bien",
+    slugs: { vi: "kich-thuoc-anh-the-pho-bien", en: "common-id-photo-sizes" },
     content: {
       vi: {
         title: "Các kích thước ảnh thẻ phổ biến ở Việt Nam (và dùng khi nào)",
         description:
-          "Giải thích nhanh 3x4, 4x6, 3.5x4.5, 5x5, 5x7 — loại nào hay dùng cho hồ sơ, visa hay in kỷ niệm.",
+          "Giải thích kích thước ảnh thẻ phổ biến ở Việt Nam: 3x4, 4x6, 3.5x4.5, 5x5, 5x7 — dùng khi nào cho hồ sơ, visa hay in lưu. Nhật Studio Đà Nẵng.",
         intro:
           "Nhiều người tới studio chỉ nói “chụp ảnh thẻ” mà chưa rõ kích thước. Hỏi đúng loại giấy tờ sẽ đỡ mất thời gian và tiền in thừa.",
         sections: [
@@ -344,7 +351,7 @@ export const blogPosts: BlogPost[] = [
       en: {
         title: "Common ID photo sizes in Vietnam (and when to use them)",
         description:
-          "A plain guide to 3x4, 4x6, 3.5x4.5, 5x5, and 5x7 — for forms, visas, and prints.",
+          "Common ID photo sizes in Vietnam explained: 3x4, 4x6, 3.5x4.5, 5x5, and 5x7 — when to use each for forms, visas, and keepsake prints in Da Nang.",
         intro:
           "A lot of people just say “ID photo” without naming a size. Matching the paperwork first saves time and extra reprints.",
         sections: [
@@ -377,12 +384,12 @@ export const blogPosts: BlogPost[] = [
     },
   },
   {
-    slug: "nen-trang-hay-nen-xanh-anh-the",
+    slugs: { vi: "nen-trang-hay-nen-xanh-anh-the", en: "white-or-blue-id-background" },
     content: {
       vi: {
         title: "Ảnh thẻ nền trắng hay nền xanh? Chọn thế nào cho đúng",
         description:
-          "Khi nào dùng nền trắng, khi nào nền xanh, và lỗi nền hay làm ảnh bị từ chối.",
+          "Ảnh thẻ nền trắng hay xanh ở Đà Nẵng? Khi nào chọn đúng màu theo giấy tờ và những lỗi nền dễ khiến ảnh bị từ chối khi nộp hồ sơ.",
         intro:
           "Hai màu nền phổ biến nhất là trắng và xanh. Không có màu nào “đẹp hơn” cho mọi giấy tờ — chỉ có màu đúng yêu cầu.",
         sections: [
@@ -413,7 +420,7 @@ export const blogPosts: BlogPost[] = [
       en: {
         title: "White or blue background for ID photos?",
         description:
-          "When white vs blue backgrounds are required — and background mistakes that get photos rejected.",
+          "White or blue ID photo background in Da Nang? Learn which color forms usually need and the background mistakes that get photos rejected.",
         intro:
           "White and blue are the usual backdrops. Neither is “better” for every form — only the one your paperwork asks for.",
         sections: [
@@ -444,12 +451,12 @@ export const blogPosts: BlogPost[] = [
     },
   },
   {
-    slug: "chup-anh-the-tre-em",
+    slugs: { vi: "chup-anh-the-tre-em", en: "kids-id-photos" },
     content: {
       vi: {
         title: "Chụp ảnh thẻ cho trẻ em: mẹo để xong nhanh, ít khóc",
         description:
-          "Kinh nghiệm chụp ảnh thẻ trẻ em ở studio — thời điểm trong ngày, phụ huynh hỗ trợ thế nào, và yêu cầu chung.",
+          "Mẹo chụp ảnh thẻ trẻ em tại Đà Nẵng: chọn giờ, phụ huynh hỗ trợ ra sao, yêu cầu chung về nền và khuôn mặt để buổi chụp nhanh, ít khóc.",
         intro:
           "Ảnh thẻ trẻ em khó hơn ảnh người lớn vì các bé khó ngồi yên. Chuẩn bị một chút ở nhà sẽ giúp buổi chụp ngắn và dễ chịu hơn.",
         sections: [
@@ -480,7 +487,7 @@ export const blogPosts: BlogPost[] = [
       en: {
         title: "Kids’ ID photos: how to finish fast with fewer tears",
         description:
-          "Practical tips for children’s ID photos — timing, parent help, and common rules.",
+          "Kids’ ID photos in Da Nang: best time of day, how parents can help, common size/background rules, and tips for a calmer same-day studio visit.",
         intro:
           "Kids’ ID photos take more patience than adult ones. A little prep at home usually means a shorter, calmer studio visit.",
         sections: [
@@ -511,12 +518,12 @@ export const blogPosts: BlogPost[] = [
     },
   },
   {
-    slug: "chup-anh-ho-so-xin-viec",
+    slugs: { vi: "chup-anh-ho-so-xin-viec", en: "job-profile-vs-id-photos" },
     content: {
       vi: {
         title: "Ảnh hồ sơ xin việc: khác ảnh thẻ giấy tờ chỗ nào?",
         description:
-          "Ảnh profile/hồ sơ xin việc nên như thế nào — trang phục, ánh sáng, và khi nào nên chụp studio thay vì selfie.",
+          "Ảnh hồ sơ xin việc khác ảnh thẻ giấy tờ thế nào? Gợi ý trang phục, ánh sáng và khi nên chụp studio thay selfie để ấn tượng chuyên nghiệp hơn.",
         intro:
           "Ảnh hồ sơ không cứng như ảnh hộ chiếu, nhưng cũng không phải ảnh sống ảo. Nhà tuyển dụng cần thấy bạn chuyên nghiệp và dễ nhận ra.",
         sections: [
@@ -543,11 +550,16 @@ export const blogPosts: BlogPost[] = [
         ],
         closing:
           "Nhật Studio có gói ảnh hồ sơ chuyên nghiệp tại Đà Nẵng — hỏi nhanh qua 0909939351.",
+        related: [
+          { href: "/anh-ho-so-chuyen-nghiep", label: "Ảnh hồ sơ chuyên nghiệp" },
+          { href: "/anh-the-ho-chieu", label: "Ảnh thẻ giấy tờ" },
+          { href: "/blog/mac-gi-khi-chup-anh-the", label: "Mặc gì khi chụp" },
+        ],
       },
       en: {
         title: "Job profile photos vs official ID photos",
         description:
-          "What makes a good job-application headshot — clothing, light, and when a studio beat a selfie.",
+          "Job profile photos vs official ID photos: clothing, lighting, and when a Da Nang studio headshot beats a selfie for applications and LinkedIn.",
         intro:
           "A profile photo isn’t as strict as a passport shot, but it’s not a social selfie either. Hiring teams want you to look professional and recognizable.",
         sections: [
@@ -574,20 +586,277 @@ export const blogPosts: BlogPost[] = [
         ],
         closing:
           "Nhat Studio offers professional profile sessions in Da Nang — ask via 0909939351.",
+        related: [
+          { href: "/professional-profile-photos", label: "Professional profile photos" },
+          { href: "/id-passport-photos", label: "ID / passport photos" },
+          { href: "/blog/what-to-wear-for-id-photos", label: "What to wear" },
+        ],
+      },
+    },
+  },
+  {
+    slugs: { vi: "gia-chup-anh-the-da-nang", en: "id-photo-prices-da-nang" },
+    content: {
+      vi: {
+        title: "Giá chụp ảnh thẻ Đà Nẵng khoảng bao nhiêu?",
+        description:
+          "Giá chụp ảnh thẻ ở Đà Nẵng phụ thuộc size, số bản in và chỉnh sửa. Gợi ý thực tế trước khi tới studio — Nhật Studio Hoàng Diệu.",
+        intro:
+          "Hay bị hỏi nhất là “bao nhiêu một tấm?”. Trả lời ngắn thì được, nhưng giá ảnh thẻ thường đi theo gói: size nào, in mấy bản, có cần file không. Dưới đây là cách mình hay giải thích cho khách mới tới.",
+        sections: [
+          {
+            heading: "Sao không có một con số cố định?",
+            paragraphs: [
+              "Vì khách ít khi chỉ lấy đúng một kích thước. Có người cần 3x4 hồ sơ, thêm vài 4x6, có người lại cần visa nền khác. In thêm cũng tính riêng. Nên hỏi trước size trên giấy tờ sẽ báo đúng hơn là đoán lung tung.",
+            ],
+          },
+          {
+            heading: "Những thứ hay làm lệch giá",
+            list: [
+              "In nhiều bản / nhiều size trong một lần",
+              "Cần file mềm gửi mail hoặc Zalo",
+              "Ảnh trẻ em (thường mất thời gian hơn một chút)",
+              "Cuối tuần đông, đôi khi phải chờ — không tăng giá vì chờ, chỉ lâu hơn",
+            ],
+          },
+          {
+            heading: "Mẹo đỡ tốn tiền oan",
+            paragraphs: [
+              "Mang sẵn form hoặc ảnh mẫu size nếu có. Đừng chụp “tạm” rồi về nhà mới phát hiện sai kích thước — in lại mất công hơn hỏi kỹ lúc đầu. Ở studio mình vẫn hay đo giúp nếu bạn mang giấy tờ theo.",
+            ],
+          },
+        ],
+        closing:
+          "Muốn hỏi giá nhanh theo đúng loại ảnh bạn cần? Gọi/Zalo 0909939351 hoặc ghé 254/9 Hoàng Diệu — báo size là mình báo gói luôn.",
+        related: [
+          { href: "/anh-the-ho-chieu", label: "Chụp ảnh thẻ Đà Nẵng" },
+          { href: "/anh-the-ho-chieu/3x4", label: "Ảnh 3x4" },
+          { href: "/blog/kich-thuoc-anh-the-pho-bien", label: "Các size phổ biến" },
+          { href: "/blog/chup-anh-the-lay-ngay", label: "Ảnh lấy ngay" },
+        ],
+      },
+      en: {
+        title: "How much do ID photos cost in Da Nang?",
+        description:
+          "ID photo prices in Da Nang depend on size, prints, and files. Practical notes before you visit — Nhat Studio on Hoang Dieu.",
+        intro:
+          "People ask “how much for one photo?” all the time. There’s a short answer, but ID pricing usually follows a package: which size, how many prints, soft file or not. Here’s how we explain it when someone walks in.",
+        sections: [
+          {
+            heading: "Why there isn’t one fixed number",
+            paragraphs: [
+              "Because most people don’t need just one size. Some want 3x4 for paperwork plus a few 4x6 prints; others need a visa background. Extra prints are separate. Tell us the size on your form and we can quote properly instead of guessing.",
+            ],
+          },
+          {
+            heading: "What usually changes the price",
+            list: [
+              "Multiple sizes or many print copies",
+              "Soft file by email or chat",
+              "Kids’ photos (often a bit more patience/time)",
+              "Busy weekends mean waiting — we don’t charge extra for the wait, it just takes longer",
+            ],
+          },
+          {
+            heading: "How not to waste money",
+            paragraphs: [
+              "Bring the form or a sample size if you have one. Don’t shoot “temporary” photos and discover the wrong size at home — reprinting costs more than asking first. We’ll measure from your paperwork if you bring it.",
+            ],
+          },
+        ],
+        closing:
+          "Want a quick quote for your exact size? Call/Zalo 0909939351 or visit 254/9 Hoang Dieu — tell us the size and we’ll price the package.",
+        related: [
+          { href: "/id-passport-photos", label: "ID photos in Da Nang" },
+          { href: "/id-passport-photos/3x4", label: "3x4 photos" },
+          { href: "/blog/common-id-photo-sizes", label: "Common sizes" },
+          { href: "/blog/same-day-id-photos-da-nang", label: "Same-day photos" },
+        ],
+      },
+    },
+  },
+  {
+    slugs: { vi: "nhat-studio-hoang-dieu-da-nang", en: "nhat-studio-hoang-dieu-da-nang" },
+    content: {
+      vi: {
+        title: "Tìm Nhật Studio trên Hoàng Diệu, Đà Nẵng thế nào cho nhanh?",
+        description:
+          "Địa chỉ 254/9 Hoàng Diệu (Hải Châu): đường đi, gửi xe, và mẹo tới chụp ảnh thẻ khỏi vòng vèo — Nhật Studio Đà Nẵng.",
+        intro:
+          "Số nhà có đường nhánh nên nhiều khách gọi hỏi “đứng đâu mới thấy?”. Viết lại cho rõ, kẻo chạy ngang Hoàng Diệu rồi lướt mất cửa.",
+        sections: [
+          {
+            heading: "Địa chỉ cụ thể",
+            paragraphs: [
+              "Nhật Studio ở 254/9 Hoàng Diệu, Hải Châu, Đà Nẵng. Là hẻm/nhánh nhỏ trong khu Hoàng Diệu — không phải mặt tiền lớn kiểu biển hiệu nhảy ra giữa đường. Nếu lần đầu, nên mở map hoặc gọi trước 0909939351 để mình chỉ đúng đoạn.",
+            ],
+          },
+          {
+            heading: "Tới bằng xe máy / ô tô",
+            paragraphs: [
+              "Xe máy gửi gần đó khá tiện. Ô tô thì tùy giờ; cuối tuần khu vực đông hơn, nên chừa thêm vài phút tìm chỗ. Không cần đến sớm cả tiếng — ảnh thẻ thường nhanh, chỉ đừng kẹt giờ đóng cửa.",
+            ],
+          },
+          {
+            heading: "Nên mang gì cho đỡ phải đi lại",
+            list: [
+              "Giấy tờ hoặc form ghi size (nếu có)",
+              "Áo dự phòng nếu sợ nhăn / không đúng kiểu",
+              "Số điện thoại để nhận file nếu cần",
+            ],
+          },
+        ],
+        closing:
+          "Lạc đường cứ gọi thẳng 0909939351. Đang trên Hoàng Diệu thì nói mình đang gần đâu, chỉ một phát là vào được.",
+        related: [
+          { href: "/anh-the-ho-chieu", label: "Chụp ảnh thẻ" },
+          { href: "/#lien-he", label: "Liên hệ / bản đồ" },
+          { href: "/blog/chup-anh-the-lay-ngay", label: "Lấy ngay trong ngày" },
+          { href: "/phuc-hoi-anh-cu", label: "Phục hồi ảnh cũ" },
+        ],
+      },
+      en: {
+        title: "How to find Nhat Studio on Hoang Dieu, Da Nang",
+        description:
+          "Finding 254/9 Hoang Dieu (Hai Chau): directions, parking notes, and what to bring for a quick ID photo visit.",
+        intro:
+          "The address sits on a small branch off Hoang Dieu, so people often call asking where to turn. Here’s the short version so you don’t drive past it.",
+        sections: [
+          {
+            heading: "Exact spot",
+            paragraphs: [
+              "We’re at 254/9 Hoang Dieu, Hai Chau, Da Nang — a small lane off Hoang Dieu, not a huge storefront on the main road. First time here? Open maps or call 0909939351 and we’ll point you in.",
+            ],
+          },
+          {
+            heading: "Bike / car",
+            paragraphs: [
+              "Motorbike parking nearby is usually easy. Cars depend on the hour; weekends get busier, so leave a few extra minutes. You don’t need to arrive an hour early — ID photos are quick — just don’t cut it against closing time.",
+            ],
+          },
+          {
+            heading: "Bring this so you don’t make a second trip",
+            list: [
+              "The form or paperwork with the size (if you have it)",
+              "A backup shirt if you’re worried about wrinkles",
+              "A phone number for soft-file delivery",
+            ],
+          },
+        ],
+        closing:
+          "Lost? Call 0909939351. If you’re already on Hoang Dieu, tell us the nearest landmark and we’ll guide you in.",
+        related: [
+          { href: "/id-passport-photos", label: "ID photos" },
+          { href: "/#contact", label: "Contact / map" },
+          { href: "/blog/same-day-id-photos-da-nang", label: "Same-day visit" },
+          { href: "/photo-restoration", label: "Photo restoration" },
+        ],
+      },
+    },
+  },
+  {
+    slugs: { vi: "anh-the-online-hay-den-studio", en: "online-id-photo-or-studio" },
+    content: {
+      vi: {
+        title: "Cắt ảnh thẻ online hay đến studio? Nên chọn cái nào",
+        description:
+          "Khi nào cắt ảnh thẻ online ổn, khi nào nên đến studio Đà Nẵng để khỏi sai nền, size và bản in — góc nhìn từ Nhật Studio.",
+        intro:
+          "App cắt ảnh thẻ tiện thật, nhất là lúc nửa đêm cần nộp hồ sơ online. Nhưng cũng có người mang file tự cắt tới in rồi bị lệch size hoặc nền không đạt. Phân biệt giúp cho đỡ mất thời gian.",
+        sections: [
+          {
+            heading: "Online ổn khi nào",
+            paragraphs: [
+              "Bạn đã có ảnh rõ, chụp đủ sáng, và chỗ nộp chỉ cần file đúng kích thước theo pixel. Tự crop cũng được nếu bạn chắc quy định. Còn in giấy tờ hành chính hay visa, đừng tin mắt thường trên điện thoại quá.",
+            ],
+          },
+          {
+            heading: "Nên tới studio khi nào",
+            list: [
+              "Cần in ngay trong ngày",
+              "Ảnh cũ bị tối, bóng đổ, nền lởm chởm",
+              "Visa / hộ chiếu — dễ bị trả hơn ảnh nội địa",
+              "Chụp trẻ em (khó ngồi yên, hay phải chụp lại)",
+            ],
+          },
+          {
+            heading: "Thực tế ở studio mình",
+            paragraphs: [
+              "Nhiều khách tưởng mang selfie là in được luôn. Có hôm được, có hôm phải chụp lại vì nền nhà hoặc góc mặt. Tới chỗ có đèn và phông sẵn thường xong một lần. Nếu chỉ cần tư vấn size, hỏi trước cũng được, không nhất thiết chụp.",
+            ],
+          },
+        ],
+        closing:
+          "Không chắc file nhà có đạt không? Mang máy tới 254/9 Hoàng Diệu — xem giúp, đạt thì in, không đạt thì chụp lại cho nhanh.",
+        related: [
+          { href: "/anh-the-ho-chieu", label: "Chụp ảnh thẻ tại studio" },
+          { href: "/blog/chup-anh-the-visa-ho-chieu", label: "Ảnh visa & hộ chiếu" },
+          { href: "/blog/nen-trang-hay-nen-xanh-anh-the", label: "Nền trắng hay xanh" },
+          { href: "/anh-the-ho-chieu/3.5x4.5", label: "Size 3.5x4.5" },
+        ],
+      },
+      en: {
+        title: "Crop ID photos online or visit a studio?",
+        description:
+          "When an online ID-photo crop is fine, and when you should visit a Da Nang studio for background, size, and print accuracy — from Nhat Studio.",
+        intro:
+          "ID crop apps are handy, especially late at night before an online form. They’re also why people show up with a file that prints the wrong size or fails a background check. Here’s the practical split.",
+        sections: [
+          {
+            heading: "Online is fine when…",
+            paragraphs: [
+              "You already have a sharp, well-lit photo and the office only needs a correct pixel size. Cropping yourself works if you know the rules. For hard-copy admin photos or visas, don’t trust a phone screen alone.",
+            ],
+          },
+          {
+            heading: "Come to the studio when…",
+            list: [
+              "You need prints the same day",
+              "The old photo is dark, shadowy, or messy in the background",
+              "Visa / passport — stricter than local ID cards",
+              "You’re photographing a child (harder to keep still)",
+            ],
+          },
+          {
+            heading: "What we see day to day",
+            paragraphs: [
+              "Plenty of people think a selfie will print fine. Sometimes yes. Sometimes the home background or face angle means a reshoot. Studio light and a proper backdrop usually finish it in one go. If you only need size advice, ask first — you don’t have to shoot.",
+            ],
+          },
+        ],
+        closing:
+          "Not sure your home file will pass? Bring the phone to 254/9 Hoang Dieu — we’ll check, print if it’s good, or reshoot quickly if it isn’t.",
+        related: [
+          { href: "/id-passport-photos", label: "Studio ID photos" },
+          { href: "/blog/visa-passport-photos-tips", label: "Visa & passport tips" },
+          { href: "/blog/white-or-blue-id-background", label: "White or blue background" },
+          { href: "/id-passport-photos/3.5x4.5", label: "3.5x4.5 size" },
+        ],
       },
     },
   },
 ];
 
-export const blogSlugs = blogPosts.map((post) => post.slug);
+export function blogSlugFor(post: BlogPost, lang: ValidLocale): string {
+  return post.slugs[lang];
+}
+
+export function blogSlugsFor(lang: ValidLocale): string[] {
+  return blogPosts.map((post) => post.slugs[lang]);
+}
+
+/** @deprecated Prefer blogSlugsFor(lang) — VI slugs only */
+export const blogSlugs = blogPosts.map((post) => post.slugs.vi);
 
 export function getBlogPost(slug: string): BlogPost | undefined {
-  return blogPosts.find((post) => post.slug === slug);
+  return blogPosts.find(
+    (post) => post.slugs.vi === slug || post.slugs.en === slug
+  );
 }
 
 export function getBlogIndex(lang: ValidLocale) {
   return blogPosts.map((post) => ({
-    slug: post.slug,
+    slug: post.slugs[lang],
     title: post.content[lang].title,
     description: post.content[lang].description,
   }));

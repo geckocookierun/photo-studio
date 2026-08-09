@@ -1,13 +1,14 @@
 import BlogArticle from "@/components/blog-article";
-import { blogSlugs, getBlogPost } from "@/lib/blog/posts";
+import { blogPosts, blogSlugFor, blogSlugsFor, getBlogPost } from "@/lib/blog/posts";
 import { getRequestLocale } from "@/lib/i18n/locale";
 import { absoluteUrl, buildPageAlternates } from "@/lib/i18n/seo";
 import { cloudinaryFolders, getImagesFromFolder } from "@/lib/utils";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-export function generateStaticParams() {
-  return blogSlugs.map((slug) => ({ slug }));
+export async function generateStaticParams() {
+  const lang = process.env.NEXT_PUBLIC_SITE_LANG === "en" ? "en" : "vi";
+  return blogSlugsFor(lang).map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({
@@ -21,7 +22,7 @@ export async function generateMetadata({
   if (!post) return {};
 
   const copy = post.content[lang] ?? post.content.vi;
-  const path = `/blog/${slug}`;
+  const path = `/blog/${blogSlugFor(post, lang)}`;
   const pageUrl = absoluteUrl(lang, path);
   const bannerHomepage = await getImagesFromFolder(cloudinaryFolders.bannerHomepage);
 
@@ -60,5 +61,9 @@ export default async function BlogPostPage({
   if (!post) notFound();
 
   const copy = post.content[lang] ?? post.content.vi;
-  return <BlogArticle lang={lang} content={copy} />;
+  const morePosts = blogPosts
+    .filter((item) => item.slugs.vi !== post.slugs.vi)
+    .slice(0, 4);
+
+  return <BlogArticle lang={lang} content={copy} morePosts={morePosts} />;
 }

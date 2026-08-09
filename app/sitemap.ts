@@ -1,7 +1,8 @@
 import { MetadataRoute } from "next";
-import { blogSlugs } from "@/lib/blog/posts";
+import { blogSlugsFor } from "@/lib/blog/posts";
 import { PHOTO_TYPES } from "@/lib/photo-types";
 import { defaultLocale } from "@/lib/i18n/config";
+import { getDomainByLocale } from "@/lib/i18n/seo";
 
 const servicePathsVi = [
   "anh-the-ho-chieu",
@@ -36,7 +37,7 @@ function viSitemap(origin: string): MetadataRoute.Sitemap {
     ...servicePathsVi.map((slug) => entry(`${origin}/${slug}`, 0.8)),
     ...PHOTO_TYPES.map((type) => entry(`${origin}/anh-the-ho-chieu/${type}`, 0.7)),
     entry(`${origin}/blog`, 0.7),
-    ...blogSlugs.map((slug) => entry(`${origin}/blog/${slug}`, 0.6)),
+    ...blogSlugsFor("vi").map((slug) => entry(`${origin}/blog/${slug}`, 0.6)),
   ];
 }
 
@@ -46,7 +47,7 @@ function enSitemap(origin: string): MetadataRoute.Sitemap {
     ...servicePathsEn.map((slug) => entry(`${origin}/${slug}`, 0.8)),
     ...PHOTO_TYPES.map((type) => entry(`${origin}/id-passport-photos/${type}`, 0.7)),
     entry(`${origin}/blog`, 0.7),
-    ...blogSlugs.map((slug) => entry(`${origin}/blog/${slug}`, 0.6)),
+    ...blogSlugsFor("en").map((slug) => entry(`${origin}/blog/${slug}`, 0.6)),
   ];
 }
 
@@ -54,10 +55,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const lang = process.env.NEXT_PUBLIC_SITE_LANG || defaultLocale;
 
   if (lang === "en") {
-    const origin = `https://${process.env.NEXT_PUBLIC_EN_DOMAIN || "photoboothdanang.vn"}`;
-    return enSitemap(origin);
+    return enSitemap(getDomainByLocale("en"));
   }
 
-  const origin = `https://${process.env.NEXT_PUBLIC_VI_DOMAIN || "chupanhthedanang.vn"}`;
-  return viSitemap(origin);
+  return viSitemap(getDomainByLocale("vi"));
 }

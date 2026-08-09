@@ -13,6 +13,7 @@ import {
 } from "@/lib/utils";
 import { Camera, CameraIcon } from "lucide-react";
 import { Metadata } from "next";
+import Link from "next/link";
 
 export async function generateMetadata(): Promise<Metadata> {
   const lang = await getRequestLocale();
@@ -155,6 +156,34 @@ export default async function GraduationPhotos() {
             </div>
           </div>
         </section>
+      </section>
+
+      <section className="container mx-auto px-4 pb-12">
+        <h2 className="text-xl font-semibold mb-4 text-center">
+          {lang === "vi" ? "Xem thêm" : "Related"}
+        </h2>
+        <div className="flex flex-wrap justify-center gap-3 text-sm">
+          {(lang === "vi"
+            ? [
+                { href: "/anh-the-ho-chieu", label: "Chụp ảnh thẻ" },
+                { href: "/anh-ho-so-chuyen-nghiep", label: "Ảnh hồ sơ" },
+                { href: "/blog", label: "Blog" },
+              ]
+            : [
+                { href: "/id-passport-photos", label: "ID photos" },
+                { href: "/professional-profile-photos", label: "Profile photos" },
+                { href: "/blog", label: "Blog" },
+              ]
+          ).map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className="rounded-full border border-gray-200 px-3 py-1.5 text-gray-700 hover:border-lime-500 hover:text-lime-700"
+            >
+              {item.label}
+            </Link>
+          ))}
+        </div>
       </section>
 
       <Footer lang={lang} />

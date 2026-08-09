@@ -69,6 +69,9 @@ export default async function IdPhotosHub() {
           relatedTitle: "Xem thêm",
           related: [
             { href: "/blog", label: "Blog ảnh thẻ" },
+            { href: "/blog/gia-chup-anh-the-da-nang", label: "Giá chụp ảnh thẻ" },
+            { href: "/blog/kich-thuoc-anh-the-pho-bien", label: "Các kích thước phổ biến" },
+            { href: "/blog/chup-anh-the-lay-ngay", label: "Ảnh lấy ngay" },
             { href: "/anh-ho-so-chuyen-nghiep", label: "Ảnh hồ sơ chuyên nghiệp" },
             { href: "/#lien-he", label: "Liên hệ / chỉ đường" },
           ],
@@ -82,6 +85,9 @@ export default async function IdPhotosHub() {
           relatedTitle: "Related",
           related: [
             { href: "/blog", label: "ID photo blog" },
+            { href: "/blog/id-photo-prices-da-nang", label: "ID photo prices" },
+            { href: "/blog/common-id-photo-sizes", label: "Common sizes" },
+            { href: "/blog/same-day-id-photos-da-nang", label: "Same-day photos" },
             { href: "/professional-profile-photos", label: "Professional profile photos" },
             { href: "/#contact", label: "Contact / directions" },
           ],

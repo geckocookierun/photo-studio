@@ -337,6 +337,36 @@ export default async function AnhHoSoChuyenNghiep() {
         </div>
       </section>
 
+      <section className="container mx-auto px-4 pb-12">
+        <h2 className="text-xl font-semibold mb-4 text-center">
+          {lang === "vi" ? "Xem thêm" : "Related"}
+        </h2>
+        <div className="flex flex-wrap justify-center gap-3 text-sm">
+          {(lang === "vi"
+            ? [
+                { href: "/blog/chup-anh-ho-so-xin-viec", label: "Ảnh hồ sơ vs ảnh thẻ" },
+                { href: "/blog/mac-gi-khi-chup-anh-the", label: "Mặc gì khi chụp" },
+                { href: "/anh-the-ho-chieu", label: "Ảnh thẻ giấy tờ" },
+                { href: "/blog", label: "Blog" },
+              ]
+            : [
+                { href: "/blog/job-profile-vs-id-photos", label: "Profile vs ID photos" },
+                { href: "/blog/what-to-wear-for-id-photos", label: "What to wear" },
+                { href: "/id-passport-photos", label: "ID photos" },
+                { href: "/blog", label: "Blog" },
+              ]
+          ).map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className="rounded-full border border-gray-200 px-3 py-1.5 text-gray-700 hover:border-slate-500 hover:text-slate-800"
+            >
+              {item.label}
+            </Link>
+          ))}
+        </div>
+      </section>
+
       <Footer lang={lang} />
     </main>
   );

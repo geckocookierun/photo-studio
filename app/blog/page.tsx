@@ -9,13 +9,13 @@ const pageCopy = {
   vi: {
     title: "Blog Chụp Ảnh Thẻ Đà Nẵng",
     description:
-      "Bài viết thực tế về ảnh thẻ, visa, hồ sơ và mẹo chụp tại Nhật Studio Đà Nẵng.",
+      "Blog thực tế về chụp ảnh thẻ, visa, hộ chiếu và ảnh hồ sơ tại Đà Nẵng — mẹo size, nền, trang phục và lấy ngay tại Nhật Studio.",
     readMore: "Đọc bài",
   },
   en: {
     title: "ID Photo Blog – Da Nang",
     description:
-      "Practical notes on ID, visa, and profile photos from Nhat Studio in Da Nang.",
+      "Practical Da Nang guides on ID, visa, passport, and profile photos — sizes, backgrounds, outfits, and same-day tips from Nhat Studio.",
     readMore: "Read article",
   },
 } as const;
